@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-23 10:25+0000\n"
+"PO-Revision-Date: 2026-01-23 10:25+0000\n"
+"Last-Translator: AI Assistant <assistant@mistral.ai>\n"
+"Language-Team: French <fr@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: store/templates/add_viewing.html:11
+msgid "Movie Title:"
+msgstr "Titre du film :"
+
+#: store/templates/add_viewing.html:15
+msgid "Date:"
+msgstr "Date :"
+
+#: store/templates/add_viewing.html:19
+msgid "Rating (0-5, step 0.5):"
+msgstr "Note (0-5, pas de 0,5) :"
+
+#: store/templates/add_viewing.html:22 store/templates/base.html:105
+msgid "Add Viewing"
+msgstr "Ajouter un visionnage"
+
+#: store/templates/base.html:102
+msgid "Popcorn Box"
+msgstr ""
+
+#: store/templates/base.html:104
+msgid "Movie List"
+msgstr "Liste des films"
+
+#: store/templates/base.html:106
+msgid "My Viewings"
+msgstr "Mes visionnages"
+
+#: store/templates/base.html:107
+msgid "Profile"
+msgstr "Profil"
+
+#: store/templates/base.html:108
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: store/templates/login.html:11
+msgid "Email:"
+msgstr "Email :"
+
+#: store/templates/login.html:15
+msgid "Password:"
+msgstr "Mot de passe :"
+
+#: store/templates/login.html:18
+msgid "Login"
+msgstr "Connexion"
+
+#: store/templates/movie_list.html:11
+msgid "Title"
+msgstr "Titre"
+
+#: store/templates/movie_list.html:12 store/templates/my_viewings.html:12
+msgid "Year"
+msgstr "Année"
+
+#: store/templates/movie_list.html:13 store/templates/my_viewings.html:13
+msgid "Director"
+msgstr "Réalisateur"
+
+#: store/templates/movie_list.html:14
+msgid "Summary"
+msgstr "Résumé"
+
+#: store/templates/movie_list.html:27
+msgid "No movies available."
+msgstr "Aucun film disponible."
+
+#: store/templates/my_viewings.html:11
+msgid "Movie Title"
+msgstr "Titre du film"
+
+#: store/templates/my_viewings.html:14
+msgid "Date Viewed"
+msgstr "Date de visionnage"
+
+#: store/templates/my_viewings.html:15
+msgid "Rating"
+msgstr "Note"
+
+#: store/templates/my_viewings.html:29
+msgid "No viewings available."
+msgstr "Aucun visionnage disponible."
+
+#: store/templates/profile.html:11
+msgid "Language:"
+msgstr "Langue :"
+
+#: store/templates/profile.html:13
+msgid "English"
+msgstr "Anglais"
+
+#: store/templates/profile.html:14
+msgid "French"
+msgstr "Français"
+
+#: store/templates/profile.html:15
+msgid "German"
+msgstr "Allemand"
+
+#: store/templates/profile.html:16
+msgid "Spanish"
+msgstr "Espagnol"
+
+#: store/templates/profile.html:19
+msgid "Update Language"
+msgstr "Mettre à jour la langue"
+
+#: store/views.py:32
+msgid "Welcome to Popcorn Box"
+msgstr ""
+
+#: store/templates/add_viewing.html:10
+msgid "Step 1: Search for a movie"
+msgstr "Étape 1 : Rechercher un film"
+
+#: store/templates/add_viewing.html:12
+msgid "Enter movie title..."
+msgstr "Entrez le titre du film..."
+
+#: store/templates/add_viewing.html:13
+msgid "Search"
+msgstr "Rechercher"
+
+#: store/templates/add_viewing.html:17
+msgid "Search Results:"
+msgstr "Résultats de recherche :"
+
+#: store/templates/add_viewing.html:26
+msgid "Step 2: Add Viewing Details"
+msgstr "Étape 2 : Ajouter les détails du visionnage"
+
+#: store/templates/add_viewing.html:32
+msgid "Selected Movie:"
+msgstr "Film sélectionné :"
+
+#: store/templates/add_viewing.html:70
+msgid "Please enter at least 2 characters"
+msgstr "Veuillez entrer au moins 2 caractères"
+
+#: store/templates/add_viewing.html:105
+msgid "No description available"
+msgstr "Aucune description disponible"
+
+#: store/templates/add_viewing.html:74
+msgid "Searching..."
+msgstr "Recherche en cours..."
+
+#: store/templates/add_viewing.html:82
+msgid "No movies found. Try a different search."
+msgstr "Aucun film trouvé. Essayez une autre recherche."
+
+#: store/templates/add_viewing.html:100
+msgid "An error occurred while searching for movies."
+msgstr "Une erreur s'est produite lors de la recherche de films."

@@ -1,0 +1,63 @@
+# Ignore environment files
+.env
+popcorn_box/popcorn_box/.env
+
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+
+# Ignore database files
+*.sqlite3
+
+# Ignore IDE configuration files
+.idea/
+.vscode/
+
+# Ignore dependency files
+venv/
+.env/
+
+# Ignore cache files
+*.cache
+
+# Ignore log files
+*.log
+
+# Ignore local configuration files
+*.local
+
+# Ignore build files
+build/
+dist/
+
+# Ignore OS configuration files
+.DS_Store
+
+# Ignore editor configuration files
+*.swp
+*.swo
+
+# Ignore local test files (except JS files in static folder)
+test_*.js
+!store/static/js/*.js
+
+# Ignore coverage and report files
+coverage/
+.htmlcov/
+*.cov
+
+# Ignore Python build files
+*.egg-info/
+dist/
+build/
+
+# Ignore pip cache files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore user configuration files
+*.config
+
+# Ignore sensitive data files
+*.secret
+*.key

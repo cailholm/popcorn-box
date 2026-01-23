@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Styles spécifiques à la page de recherche de films */
+    #movie-search-container, #viewing-form-container {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    #search_movie_title {
+        width: 300px;
+        padding: 8px;
+        margin-right: 10px;
+    }
+    
+    #search-movie-btn {
+        padding: 8px 16px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    #search-movie-btn:hover {
+        background-color: #555;
+    }
+    
+    #movie-results-list li {
+        padding: 12px;
+        border: 1px solid #ddd;
+        margin-bottom: 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    #movie-results-list li:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-color: #ccc;
+    }
+    
+    #movie-results-list li img {
+        width: 60px;
+        height: auto;
+        margin-right: 15px;
+        border-radius: 4px;
+        transition: transform 0.3s ease;
+        display: block;
+    }
+    
+    #movie-results-list li:hover img {
+        transform: scale(1.05);
+    }
+    
+    #movie-results-list li:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #movie_title_display {
+        width: 100%;
+        padding: 8px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    
+    <div id="movie-search-container">
+        <h2>{% trans 'Step 1: Search for a movie' %}</h2>
+        <div>
+            <label for="search_movie_title">{% trans 'Movie Title:' %}</label>
+            <input type="text" id="search_movie_title" placeholder="{% trans 'Enter movie title...' %}">
+            <button id="search-movie-btn">{% trans 'Search' %}</button>
+        </div>
+        
+        <div id="search-results" style="margin-top: 20px; display: none;">
+            <h3>{% trans 'Search Results:' %}</h3>
+            <div id="movie-results-list"></div>
+        </div>
+    </div>
+    
+    <div id="viewing-form-container" style="display: none; margin-top: 30px;">
+        <h2>{% trans 'Step 2: Add Viewing Details' %}</h2>
+        <form method="post" id="add-viewing-form">
+            {% csrf_token %}
+            <input type="hidden" id="selected_movie_id" name="movie_id" required>
+            <input type="hidden" id="selected_movie_title" name="movie_title" required>
+            
+            <div>
+                <label for="movie_title_display">{% trans 'Selected Movie:' %}</label>
+                <input type="text" id="movie_title_display" readonly>
+            </div>
+            
+            <div>
+                <label for="date">{% trans 'Date:' %}</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            
+            <div>
+                <label for="rating">{% trans 'Rating (0-5, step 0.5):' %}</label>
+                <input type="number" id="rating" name="rating" min="0" max="5" step="0.5" required>
+            </div>
+            
+            <button type="submit">{% trans 'Add Viewing' %}</button>
+        </form>
+    </div>
+    
+    {% block extra_js %}
+    <!-- Configuration pour les affiches de films (doit être défini avant le JS) -->
+    <script>
+        // Configuration TMDB pour les affiches
+        window.tmdbConfig = {
+            imageBaseUrl: 'https://image.tmdb.org/t/p/',
+            posterSize: 'w185'  // Taille optimale pour les résultats de recherche
+        };
+        
+        // Messages traduits pour le JavaScript externe
+        window.movieSearchMessages = {
+            minChars: '{% trans "Please enter at least 2 characters" %}',
+            searching: '{% trans "Searching..." %}',
+            noResults: '{% trans "No movies found. Try a different search." %}',
+            error: '{% trans "An error occurred while searching for movies." %}',
+            noDescription: '{% trans "No description available" %}',
+            previous: '{% trans "Previous" %}',
+            next: '{% trans "Next" %}',
+            page: '{% trans "Page" %}',
+            of: '{% trans "of" %}'
+        };
+    </script>
+    
+    <!-- Chargement du JavaScript externe -->
+    <script src="{% static 'js/movie_search.js' %}"></script>
+    {% endblock %}
+{% endblock %}

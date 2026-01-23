@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load movie_filters %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>{% trans 'Poster' %}</th>
+                <th>{% trans 'Movie Title' %}</th>
+                <th>{% trans 'Year' %}</th>
+                <th>{% trans 'Director' %}</th>
+                <th>{% trans 'Date Viewed' %}</th>
+                <th>{% trans 'Rating' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for viewing in viewings %}
+                <tr>
+                    <td>
+                        <a href="{% url 'movie_detail' viewing.movie_id %}">
+                            {% if viewing.poster_url %}
+                                <img src="{{ viewing.poster_url }}" alt="{{ viewing.translated_title }}" style="width: 92px; height: auto;">
+                            {% else %}
+                                -
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td><a href="{% url 'movie_detail' viewing.movie_id %}">{{ viewing.translated_title }}</a></td>
+                    <td>{{ viewing.year }}</td>
+                    <td>{{ viewing.director }}</td>
+                    <td>{{ viewing.date }}</td>
+                    <td>{{ viewing.rating }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">{% trans 'No viewings available.' %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

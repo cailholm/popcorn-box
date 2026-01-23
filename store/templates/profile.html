@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <label for="language">{% trans 'Language:' %}</label>
+            <select id="language" name="language" required>
+                <option value="en" {% if user_profile.language == 'en' %}selected{% endif %}>{% trans 'English' %}</option>
+                <option value="fr" {% if user_profile.language == 'fr' %}selected{% endif %}>{% trans 'French' %}</option>
+                <option value="de" {% if user_profile.language == 'de' %}selected{% endif %}>{% trans 'German' %}</option>
+                <option value="es" {% if user_profile.language == 'es' %}selected{% endif %}>{% trans 'Spanish' %}</option>
+            </select>
+        </div>
+        <button type="submit">{% trans 'Update Language' %}</button>
+    </form>
+{% endblock %}

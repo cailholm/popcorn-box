@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        main {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .messages {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #ffdddd;
+            color: #d8000c;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #ddffdd;
+            color: #4F8A10;
+        }
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 500px;
+        }
+        form div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        form label {
+            font-weight: bold;
+        }
+        form input, form button {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        form button {
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    {% load i18n %}
+    {% if user.is_authenticated %}
+        <nav>
+            <div class="nav-brand">{% trans 'Popcorn Box' %}</div>
+            <div class="nav-links">
+                <a href="{% url 'movie_list' %}">{% trans 'Movie List' %}</a>
+                <a href="{% url 'add_viewing' %}">{% trans 'Add Viewing' %}</a>
+                <a href="{% url 'my_viewings' %}">{% trans 'My Viewings' %}</a>
+                <a href="{% url 'profile' %}">{% trans 'Profile' %}</a>
+                <a href="{% url 'logout' %}">{% trans 'Logout' %}</a>
+            </div>
+        </nav>
+    {% endif %}
+    <main>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="messages {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </main>
+    
+    <!-- Blocs pour JavaScript supplémentaire -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
