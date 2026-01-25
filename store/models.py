@@ -105,10 +105,12 @@ class MovieTranslationManager(models.Manager):
                     overview = translation_data.get('data', {}).get('overview', movie.summary)
 
                     # Utiliser le titre original si le titre traduit est vide
-                    is_fallback = False
                     if not title:
                         title = movie.original_title
-                        is_fallback = True
+
+                    # Considérer comme fallback uniquement si ni le titre ni le résumé ne sont traduits
+                    # (c'est-à-dire si le résumé est le même que l'original)
+                    is_fallback = overview == movie.summary
 
                     return self.create(
                         movie=movie,

@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('language', models.CharField(choices=[('en', 'English'), ('fr', 'French'), ('de', 'German'), ('es', 'Spanish')], max_length=2)),
                 ('title', models.CharField(max_length=255)),
                 ('summary', models.TextField()),
-                ('movie', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='popcorn_box.movie')),
+                ('movie', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='store.movie')),
             ],
             options={
                 'unique_together': {('movie', 'language')},
