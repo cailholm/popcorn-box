@@ -105,8 +105,17 @@ nav {
     display: flex;
     align-items: center;
     gap: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
     position: relative;
+}
+
+.nav-brand span {
+    background-color: var(--popcorn-gold);
+    color: var(--popcorn-red-dark);
+    padding: 0.2rem 0.8rem;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
 }
 
 .nav-brand::before {
@@ -174,12 +183,12 @@ nav a {
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(214, 40, 40, 0.7);
     border: 2px solid transparent;
 }
 
 nav a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(214, 40, 40, 0.9);
     transform: translateY(-2px);
     border-color: var(--popcorn-gold);
 }
@@ -295,13 +304,7 @@ table {
 }
 
 th {
-    background: repeating-linear-gradient(
-        45deg,
-        var(--popcorn-red) 0px,
-        var(--popcorn-red) 20px,
-        var(--popcorn-gold) 20px,
-        var(--popcorn-gold) 40px
-    );
+    background: var(--popcorn-red);
     color: white;
     padding: 1.2rem;
     text-align: left;
