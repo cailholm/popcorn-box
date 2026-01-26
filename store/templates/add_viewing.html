@@ -7,11 +7,7 @@
 <style>
     /* Styles spécifiques à la page de recherche de films - mis à jour pour le nouveau design */
     #movie-search-container, #viewing-form-container {
-        background: white;
-        padding: 1.5rem;
-        border-radius: var(--border-radius);
         margin-bottom: 1.5rem;
-        box-shadow: var(--box-shadow);
     }
     
     #search-section {
@@ -178,14 +174,10 @@
         
         #movie-results-list {
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-
-{% block content %}
         }
     }
 </style>
 {% endblock %}
-
-{% block content %}
 
 {% block content %}
     <div class="card fade-in">
@@ -194,7 +186,7 @@
             {{ title }}
         </h1>
         
-        <div id="movie-search-container" class="fade-in">
+        <div id="movie-search-container" class="popcorn-card fade-in">
             <h2><i class="fas fa-search"></i> {% trans 'Step 1: Search for a movie' %}</h2>
             <div id="search-section">
                 <div style="flex: 1;">
@@ -216,7 +208,7 @@
             </div>
         </div>
         
-        <div id="viewing-form-container" class="fade-in" style="display: none; margin-top: 2rem;">
+        <div id="viewing-form-container" class="popcorn-card fade-in" style="display: none; margin-top: 2rem;">
             <h2><i class="fas fa-calendar-plus"></i> {% trans 'Step 2: Add Viewing Details' %}</h2>
             <form method="post" id="add-viewing-form">
                 {% csrf_token %}

@@ -9,7 +9,10 @@
     --popcorn-cream: #fff8e1;
     --popcorn-yellow: #ffd700;
     --popcorn-gold: #ffb300;
-    
+    --cinema-dark: #262626;
+    --cinema-darker: #1a1a1a;
+    --cinema-light: #3a3a3a;
+
     /* Professional accents */
     --primary-color: var(--popcorn-red);
     --secondary-color: var(--popcorn-gold);
@@ -21,12 +24,12 @@
     --danger-color: var(--popcorn-red);
     --text-color: #333;
     --text-light: #7f8c8d;
-    
+
     /* Design elements */
     --border-radius: 8px;
     --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
-    
+
     /* Popcorn stripe pattern */
     --stripe-size: 45deg;
     --stripe-width: 30px;
@@ -41,15 +44,69 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--popcorn-cream);
+    color: #e0e0e0;
     min-height: 100vh;
-    /* Subtle popcorn texture background */
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px),
-        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px),
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px);
-    background-size: 50px 50px;
+    /* Cinema room with projector light beam effect */
+    background-color: #0a0a0a;
+    background-image:
+        /* Main projector beam - visible cone from top-right */
+        conic-gradient(
+            from 195deg at 90% -10%,
+            transparent 0deg,
+            rgba(255, 250, 220, 0.02) 12deg,
+            rgba(255, 245, 180, 0.08) 18deg,
+            rgba(255, 240, 150, 0.15) 22deg,
+            rgba(255, 235, 130, 0.18) 25deg,
+            rgba(255, 240, 150, 0.15) 28deg,
+            rgba(255, 245, 180, 0.08) 32deg,
+            rgba(255, 250, 220, 0.02) 38deg,
+            transparent 45deg
+        ),
+        /* Light spill / glow around the beam */
+        radial-gradient(
+            ellipse 100% 80% at 90% -10%,
+            rgba(255, 245, 200, 0.12) 0%,
+            rgba(255, 240, 180, 0.05) 40%,
+            transparent 70%
+        ),
+        /* Blue ambient reflections - subtle cinema atmosphere */
+        radial-gradient(
+            ellipse 60% 50% at 10% 90%,
+            rgba(80, 140, 220, 0.08) 0%,
+            rgba(60, 120, 200, 0.04) 50%,
+            transparent 80%
+        ),
+        radial-gradient(
+            ellipse 40% 35% at 5% 40%,
+            rgba(100, 160, 240, 0.06) 0%,
+            transparent 70%
+        ),
+        radial-gradient(
+            ellipse 50% 40% at 25% 100%,
+            rgba(70, 130, 210, 0.07) 0%,
+            transparent 75%
+        ),
+        /* Subtle blue edge glow on the beam */
+        conic-gradient(
+            from 195deg at 90% -10%,
+            transparent 0deg,
+            transparent 10deg,
+            rgba(120, 180, 255, 0.03) 11deg,
+            transparent 13deg,
+            transparent 37deg,
+            rgba(120, 180, 255, 0.03) 39deg,
+            transparent 41deg
+        ),
+        /* Dust particles floating in the light */
+        radial-gradient(circle at 75% 25%, rgba(255, 255, 220, 0.08) 0%, transparent 3%),
+        radial-gradient(circle at 82% 40%, rgba(255, 255, 220, 0.06) 0%, transparent 2%),
+        radial-gradient(circle at 70% 55%, rgba(255, 255, 220, 0.07) 0%, transparent 4%),
+        radial-gradient(circle at 85% 30%, rgba(255, 255, 220, 0.05) 0%, transparent 2%),
+        radial-gradient(circle at 78% 65%, rgba(255, 255, 220, 0.06) 0%, transparent 3%),
+        radial-gradient(circle at 68% 35%, rgba(255, 255, 220, 0.04) 0%, transparent 2%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 /* Popcorn Box Stripe Pattern - Main Theme */
@@ -97,6 +154,22 @@ nav {
     z-index: 1000;
     /* Add popcorn box border */
     border-bottom: 5px solid var(--popcorn-gold);
+}
+
+/* Cinema Navigation - Dark elegant style */
+nav.cinema-nav {
+    background: var(--cinema-dark);
+    border-bottom: 2px solid var(--cinema-light);
+}
+
+nav.cinema-nav a:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+nav.cinema-nav a:not(.active):hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--popcorn-gold);
 }
 
 .nav-brand {
@@ -199,6 +272,10 @@ nav a.active {
     box-shadow: 0 0 0 2px var(--popcorn-red) inset;
 }
 
+nav a.active i {
+    color: var(--popcorn-red);
+}
+
 /* Main Content */
 main {
     padding: 2rem;
@@ -257,7 +334,7 @@ h3 {
     background: white;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    padding: 2rem;
+    padding: 1.5rem 1.5rem 1.5rem 3rem;
     margin-bottom: 2rem;
     transition: var(--transition);
     border: 3px solid var(--popcorn-red);
@@ -890,11 +967,11 @@ button i, .btn i {
         align-items: center;
         text-align: center;
     }
-    
+
     .viewing-movie-poster {
         flex: 0 0 auto;
     }
-    
+
     .viewing-movie-info {
         align-items: center;
     }
@@ -1044,8 +1121,107 @@ button i, .btn i {
     to { transform: rotate(360deg); }
 }
 
+/* Cinema Theater Style - Neutral Elements */
+.cinema-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 1px solid #3a3a3a;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cinema-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+        90deg,
+        #ff0000 0px, #ff0000 10px,
+        #ffffff 10px, #ffffff 20px,
+        #ff0000 20px, #ff0000 30px
+    );
+}
+
+.cinema-section {
+    background-color: #1e1e1e;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border: 1px solid #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cinema-title {
+    color: #ffd700;
+    border-bottom: 2px solid #ff0000;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.cinema-meta {
+    color: #aaaaaa;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 1rem;
+    margin: 0.5rem 0;
+}
+
+.cinema-rating {
+    background-color: #ff0000;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.cinema-divider {
+    height: 1px;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px, transparent 10px,
+        #333 10px, #333 20px
+    );
+    margin: 1.5rem 0;
+}
+
+.cinema-empty {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+}
+
+.cinema-empty i {
+    font-size: 3rem;
+    color: #ff0000;
+    margin-bottom: 1rem;
+}
+
+/* Movie poster cinema style */
+.movie-poster-cinema {
+    border: 3px solid #ff0000;
+    box-shadow: 0 0 0 5px #1a1a1a, 0 4px 12px rgba(255, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.movie-poster-cinema:hover {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 0 0 5px #ff0000, 0 6px 16px rgba(255, 0, 0, 0.4);
+}
+
 /* Popcorn Responsive Design */
 @media (max-width: 768px) {
+=======
     nav {
         flex-direction: column;
         padding: 1rem;
@@ -1133,7 +1309,7 @@ button i, .btn i {
 
 /* Popcorn Background Pattern - Optional */
 .popcorn-background {
-    background-image: 
+    background-image:
         radial-gradient(circle at 20% 30%, var(--popcorn-gold) 2px, transparent 2px),
         radial-gradient(circle at 80% 70%, var(--popcorn-red) 2px, transparent 2px),
         radial-gradient(circle at 40% 80%, var(--popcorn-gold) 1px, transparent 1px),

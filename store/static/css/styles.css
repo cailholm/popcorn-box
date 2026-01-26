@@ -32,7 +32,6 @@ body {
 
 /* Header and Navigation */
 nav {
-    background: linear-gradient(135deg, var(--primary-color), #1a252f);
     color: white;
     padding: 1rem 2rem;
     display: flex;

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Nav Icon Fix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --popcorn-red: #d62828;
+            --popcorn-gold: #ffb300;
+            --cinema-dark: #262626;
+        }
+        
+        nav.cinema-nav {
+            background: var(--cinema-dark);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(214, 40, 40, 0.7);
+            border: 2px solid transparent;
+        }
+        
+        nav a:hover {
+            background-color: rgba(214, 40, 40, 0.9);
+            transform: translateY(-2px);
+            border-color: var(--popcorn-gold);
+        }
+        
+        nav a.active {
+            background-color: var(--popcorn-gold);
+            color: var(--popcorn-red);
+            box-shadow: 0 0 0 2px var(--popcorn-red) inset;
+        }
+        
+        nav a.active i {
+            color: var(--popcorn-red);
+        }
+        
+        .popcorn-icon {
+            color: var(--popcorn-gold);
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="cinema-nav">
+        <div class="nav-brand">
+            <i class="fas fa-film popcorn-icon popcorn-icon-red"></i>
+            <span>Popcorn Box</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active">
+                <i class="fas fa-film popcorn-icon"></i>
+                <span>Movie List (Active)</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-plus popcorn-icon"></i>
+                <span>Add Viewing</span>
+            </a>
+            <a href="#">
+                <i class="fas fa-eye popcorn-icon"></i>
+                <span>My Viewings</span>
+            </a>
+        </div>
+    </nav>
+    
+    <div style="padding: 2rem; color: white;">
+        <h2>Test Results:</h2>
+        <p>✅ The active link should have a gold background</p>
+        <p>✅ The active link text should be red</p>
+        <p>✅ The active link icon should be red (not gold) for visibility</p>
+        <p>✅ Inactive links should have gold icons</p>
+    </div>
+</body>
+</html>
