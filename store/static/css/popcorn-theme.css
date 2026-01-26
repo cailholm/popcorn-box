@@ -1,0 +1,1008 @@
+/* Popcorn Box Theme - Authentic Popcorn Box Design */
+
+:root {
+    /* Popcorn Box Color Scheme - Red & White Stripes Theme */
+    --popcorn-red: #d62828;
+    --popcorn-red-dark: #b71c1c;
+    --popcorn-red-light: #ff5252;
+    --popcorn-white: #ffffff;
+    --popcorn-cream: #fff8e1;
+    --popcorn-yellow: #ffd700;
+    --popcorn-gold: #ffb300;
+    
+    /* Professional accents */
+    --primary-color: var(--popcorn-red);
+    --secondary-color: var(--popcorn-gold);
+    --accent-color: var(--popcorn-red-light);
+    --light-color: var(--popcorn-cream);
+    --dark-color: var(--popcorn-red-dark);
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --danger-color: var(--popcorn-red);
+    --text-color: #333;
+    --text-light: #7f8c8d;
+    
+    /* Design elements */
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    
+    /* Popcorn stripe pattern */
+    --stripe-size: 45deg;
+    --stripe-width: 30px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--popcorn-cream);
+    min-height: 100vh;
+    /* Subtle popcorn texture background */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0.5px, transparent 0.5px);
+    background-size: 50px 50px;
+}
+
+/* Popcorn Box Stripe Pattern - Main Theme */
+.popcorn-stripes {
+    background: repeating-linear-gradient(
+        var(--stripe-size),
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) var(--stripe-width),
+        var(--popcorn-white) var(--stripe-width),
+        var(--popcorn-white) calc(var(--stripe-width) * 2)
+    );
+}
+
+.popcorn-stripes-horizontal {
+    background: repeating-linear-gradient(
+        90deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) var(--stripe-width),
+        var(--popcorn-white) var(--stripe-width),
+        var(--popcorn-white) calc(var(--stripe-width) * 2)
+    );
+}
+
+.popcorn-stripes-diagonal {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) var(--stripe-width),
+        var(--popcorn-white) var(--stripe-width),
+        var(--popcorn-white) calc(var(--stripe-width) * 2)
+    );
+}
+
+/* Header and Navigation - Popcorn Box Style */
+nav {
+    background: var(--popcorn-red);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* Add popcorn box border */
+    border-bottom: 5px solid var(--popcorn-gold);
+}
+
+.nav-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.nav-brand::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--popcorn-gold) 0px,
+        var(--popcorn-gold) 5px,
+        var(--popcorn-white) 5px,
+        var(--popcorn-white) 10px
+    );
+}
+
+.nav-brand::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--popcorn-gold) 0px,
+        var(--popcorn-gold) 5px,
+        var(--popcorn-white) 5px,
+        var(--popcorn-white) 10px
+    );
+}
+
+.nav-brand i {
+    color: var(--popcorn-gold);
+    font-size: 1.5em;
+    animation: pop 2s infinite alternate;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    border-color: var(--popcorn-gold);
+}
+
+nav a.active {
+    background-color: var(--popcorn-gold);
+    color: var(--popcorn-red);
+    box-shadow: 0 0 0 2px var(--popcorn-red) inset;
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Typography - Popcorn Style */
+h1, h2, h3, h4 {
+    color: var(--popcorn-red);
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(214, 40, 40, 0.2);
+}
+
+h1 {
+    font-size: 2.5rem;
+    border-bottom: 4px solid var(--popcorn-gold);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    position: relative;
+}
+
+h1::before {
+    content: '🍿';
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+}
+
+h1::after {
+    content: '🍿';
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-top: 2rem;
+    border-bottom: 2px solid var(--popcorn-red-light);
+    padding-bottom: 0.3rem;
+}
+
+h3 {
+    font-size: 1.7rem;
+}
+
+/* Popcorn Cards - Main Content Containers */
+.popcorn-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+    border: 3px solid var(--popcorn-red);
+    position: relative;
+    overflow: hidden;
+}
+
+.popcorn-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 15px,
+        var(--popcorn-gold) 15px,
+        var(--popcorn-gold) 30px
+    );
+}
+
+.popcorn-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(214, 40, 40, 0.2);
+}
+
+/* Popcorn Tables */
+.table-container {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    border: 2px solid var(--popcorn-red);
+}
+
+th {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 20px,
+        var(--popcorn-gold) 20px,
+        var(--popcorn-gold) 40px
+    );
+    color: white;
+    padding: 1.2rem;
+    text-align: left;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+td {
+    padding: 1.2rem;
+    border-bottom: 2px solid var(--popcorn-red-light);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: rgba(214, 40, 40, 0.05);
+}
+
+/* Links in tables */
+table a {
+    color: var(--popcorn-red);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+}
+
+table a::after {
+    content: '🍿';
+    font-size: 0.8em;
+    margin-left: 5px;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+table a:hover {
+    color: var(--popcorn-gold);
+    text-decoration: underline;
+}
+
+table a:hover::after {
+    opacity: 1;
+}
+
+/* Images - Movie Posters with Popcorn Style */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--popcorn-gold);
+}
+
+img:hover {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 6px 12px rgba(214, 40, 40, 0.3);
+}
+
+/* Popcorn Messages */
+.messages {
+    margin: 1rem 0;
+    padding: 1.2rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--box-shadow);
+    border-left: 5px solid;
+    position: relative;
+    overflow: hidden;
+}
+
+.messages::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 10px,
+        var(--popcorn-gold) 10px,
+        var(--popcorn-gold) 20px
+    );
+}
+
+.messages.error {
+    background-color: #ffebee;
+    color: var(--popcorn-red-dark);
+    border-left-color: var(--popcorn-red);
+}
+
+.messages.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-left-color: #4caf50;
+}
+
+.messages.info {
+    background-color: #e1f5fe;
+    color: #0277bd;
+    border-left-color: var(--popcorn-red);
+}
+
+.messages.warning {
+    background-color: #fff3e0;
+    color: #e65100;
+    border-left-color: #ff9800;
+}
+
+/* Popcorn Forms */
+form {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-top: 1.5rem;
+    max-width: 600px;
+    border: 2px solid var(--popcorn-red);
+    position: relative;
+}
+
+form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 15px,
+        var(--popcorn-gold) 15px,
+        var(--popcorn-gold) 30px
+    );
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: var(--popcorn-red);
+    font-size: 1.1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 3px solid var(--popcorn-red);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: white;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--popcorn-gold);
+    box-shadow: 0 0 0 4px rgba(214, 40, 40, 0.1);
+    transform: translateY(-2px);
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'292.4'%20height%3D'292.4'%3E%3Cpath%20fill%3D'%23d62828'%20d%3D'M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-4.9-1.9-9.2-5.5-12.8z'%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 0.7rem 0.7rem;
+}
+
+/* Popcorn Buttons */
+button, .btn {
+    padding: 0.8rem 1.6rem;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 20px,
+        var(--popcorn-red-dark) 20px,
+        var(--popcorn-red-dark) 40px
+    );
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 8px rgba(214, 40, 40, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+button::before, .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 0px,
+        rgba(255, 255, 255, 0.2) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    opacity: 0;
+    transition: var(--transition);
+}
+
+button:hover, .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(214, 40, 40, 0.4);
+}
+
+button:hover::before, .btn:hover::before {
+    opacity: 1;
+}
+
+button:active, .btn:active {
+    transform: translateY(-1px);
+}
+
+button i, .btn i {
+    animation: pop 1s infinite alternate;
+}
+
+/* Button variants */
+.btn-primary {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 20px,
+        var(--popcorn-red-dark) 20px,
+        var(--popcorn-red-dark) 40px
+    );
+}
+
+.btn-success {
+    background: repeating-linear-gradient(
+        45deg,
+        #4caf50 0px,
+        #4caf50 20px,
+        #388e3c 20px,
+        #388e3c 40px
+    );
+}
+
+.btn-danger {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red-dark) 0px,
+        var(--popcorn-red-dark) 20px,
+        #9e1b1b 20px,
+        #9e1b1b 40px
+    );
+}
+
+.btn-warning {
+    background: repeating-linear-gradient(
+        45deg,
+        #ff9800 0px,
+        #ff9800 20px,
+        #e68a00 20px,
+        #e68a00 40px
+    );
+}
+
+.btn-outline {
+    background: transparent;
+    border: 3px solid var(--popcorn-red);
+    color: var(--popcorn-red);
+    box-shadow: none;
+}
+
+.btn-outline:hover {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 20px,
+        var(--popcorn-red-dark) 20px,
+        var(--popcorn-red-dark) 40px
+    );
+    color: white;
+}
+
+/* Popcorn Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+
+/* Popcorn Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes pop {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(5deg);
+    }
+}
+
+.pop {
+    animation: pop 1s infinite alternate;
+}
+
+/* Popcorn Movie Poster Specific Styles */
+.movie-poster {
+    width: 92px;
+    height: 138px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+    border: 3px solid var(--popcorn-gold);
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-poster::before {
+    content: '🍿';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 1;
+}
+
+.movie-poster:hover {
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 6px 12px rgba(214, 40, 40, 0.3);
+}
+
+.movie-poster:hover::before {
+    opacity: 1;
+}
+
+/* Popcorn Rating Display */
+.rating {
+    display: inline-block;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-gold) 0px,
+        var(--popcorn-gold) 10px,
+        var(--popcorn-red) 10px,
+        var(--popcorn-red) 20px
+    );
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.rating::before {
+    content: '🍿';
+    margin-right: 5px;
+}
+
+/* Popcorn Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--popcorn-red);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--popcorn-gold);
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+/* Popcorn Movie Search Specific Styles */
+.movie-result-card {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    border: 2px solid var(--popcorn-red);
+}
+
+.movie-result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 15px,
+        var(--popcorn-gold) 15px,
+        var(--popcorn-gold) 30px
+    );
+}
+
+.movie-result-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(214, 40, 40, 0.3);
+}
+
+.movie-result-card img {
+    width: 100%;
+    height: 185px;
+    object-fit: cover;
+    display: block;
+}
+
+.movie-result-info {
+    padding: 1rem;
+}
+
+.movie-result-title {
+    font-weight: 700;
+    color: var(--popcorn-red);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.movie-result-year {
+    color: var(--popcorn-gold);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.movie-result-overview {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.movie-result-card.selected {
+    border: 3px solid var(--popcorn-gold);
+    transform: scale(0.98);
+}
+
+/* Popcorn Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    padding: 0.6rem 1.2rem;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 15px,
+        var(--popcorn-red-dark) 15px,
+        var(--popcorn-red-dark) 30px
+    );
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 700;
+}
+
+.pagination button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(214, 40, 40, 0.3);
+}
+
+.pagination button:disabled {
+    background: #e0e0e0;
+    color: #9e9e9e;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    color: var(--popcorn-red);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Popcorn Loading Spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 4px solid rgba(214, 40, 40, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--popcorn-gold);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Popcorn Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    nav a {
+        margin: 0.5rem;
+        padding: 0.5rem 1rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h1::before,
+    h1::after {
+        font-size: 1.5rem;
+        left: -30px;
+        right: -30px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    form {
+        padding: 1rem;
+    }
+
+    .popcorn-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h1::before,
+    h1::after {
+        font-size: 1.2rem;
+        left: -25px;
+        right: -25px;
+    }
+
+    nav {
+        padding: 0.75rem;
+    }
+
+    .nav-brand {
+        font-size: 1.4rem;
+    }
+
+    nav a {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    button, .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .movie-poster {
+        width: 70px;
+        height: 105px;
+    }
+}
+
+/* Popcorn Background Pattern - Optional */
+.popcorn-background {
+    background-image: 
+        radial-gradient(circle at 20% 30%, var(--popcorn-gold) 2px, transparent 2px),
+        radial-gradient(circle at 80% 70%, var(--popcorn-red) 2px, transparent 2px),
+        radial-gradient(circle at 40% 80%, var(--popcorn-gold) 1px, transparent 1px),
+        radial-gradient(circle at 60% 20%, var(--popcorn-red) 1px, transparent 1px);
+    background-size: 100px 100px;
+}
+
+/* Popcorn Icons - Custom icons for the theme */
+.popcorn-icon {
+    color: var(--popcorn-gold);
+    font-size: 1.2em;
+    animation: pop 1s infinite alternate;
+}
+
+.popcorn-icon-red {
+    color: var(--popcorn-red);
+}
+
+.popcorn-icon-large {
+    font-size: 2em;
+}
+
+/* Popcorn Divider */
+.popcorn-divider {
+    height: 3px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 20px,
+        var(--popcorn-gold) 20px,
+        var(--popcorn-gold) 40px
+    );
+    margin: 2rem 0;
+}

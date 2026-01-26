@@ -4,17 +4,27 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div>
-            <label for="email">{% trans 'Email:' %}</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">{% trans 'Password:' %}</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">{% trans 'Login' %}</button>
-    </form>
+    <div class="popcorn-card fade-in" style="max-width: 400px; margin: 2rem auto;">
+        <h1 style="text-align: center;">
+            <i class="fas fa-sign-in-alt popcorn-icon popcorn-icon-large bounce"></i>
+            {{ title }}
+        </h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="email">{% trans 'Email:' %}</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">{% trans 'Password:' %}</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-sign-in-alt popcorn-icon"></i>
+                {% trans 'Login' %}
+            </button>
+        </form>
+    </div>
 {% endblock %}
+=======
+=======

@@ -4,18 +4,36 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div>
-            <label for="language">{% trans 'Language:' %}</label>
-            <select id="language" name="language" required>
-                <option value="en" {% if user_profile.language == 'en' %}selected{% endif %}>{% trans 'English' %}</option>
-                <option value="fr" {% if user_profile.language == 'fr' %}selected{% endif %}>{% trans 'French' %}</option>
-                <option value="de" {% if user_profile.language == 'de' %}selected{% endif %}>{% trans 'German' %}</option>
-                <option value="es" {% if user_profile.language == 'es' %}selected{% endif %}>{% trans 'Spanish' %}</option>
-            </select>
+    <div class="popcorn-card fade-in" style="max-width: 500px; margin: 2rem auto;">
+        <h1 style="text-align: center;">
+            <i class="fas fa-user-cog popcorn-icon popcorn-icon-large bounce"></i>
+            {{ title }}
+        </h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="language">{% trans 'Language:' %}</label>
+                <select id="language" name="language" class="form-control" required>
+                    <option value="en" {% if user_profile.language == 'en' %}selected{% endif %}>{% trans 'English' %}</option>
+                    <option value="fr" {% if user_profile.language == 'fr' %}selected{% endif %}>{% trans 'French' %}</option>
+                    <option value="de" {% if user_profile.language == 'de' %}selected{% endif %}>{% trans 'German' %}</option>
+                    <option value="es" {% if user_profile.language == 'es' %}selected{% endif %}>{% trans 'Spanish' %}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success" style="width: 100%;">
+                <i class="fas fa-save popcorn-icon"></i>
+                {% trans 'Update Language' %}
+            </button>
+        </form>
+        
+        <div class="mt-3 text-center">
+            <p style="color: var(--text-light); font-size: 0.9rem;">
+                <i class="fas fa-info-circle popcorn-icon"></i>
+                {% trans 'Current language:' %} 
+                <strong>{{ user_profile.get_language_display }}</strong>
+            </p>
         </div>
-        <button type="submit">{% trans 'Update Language' %}</button>
-    </form>
+    </div>
 {% endblock %}
+=======
+=======

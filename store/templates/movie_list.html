@@ -5,37 +5,47 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>{% trans 'Poster' %}</th>
-                <th>{% trans 'Title' %}</th>
-                <th>{% trans 'Year' %}</th>
-                <th>{% trans 'Director' %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for movie in movies %}
-                <tr>
-                    <td>
-                        <a href="{% url 'movie_detail' movie.movie.id %}">
-                            {% if movie.poster_url %}
-                                <img src="{{ movie.poster_url }}" alt="{{ movie.translated_title }}" style="width: 92px; height: auto;">
-                            {% else %}
-                                -
-                            {% endif %}
-                        </a>
-                    </td>
-                    <td><a href="{% url 'movie_detail' movie.movie.id %}">{{ movie.translated_title }}</a></td>
-                    <td>{{ movie.year }}</td>
-                    <td>{{ movie.director }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">{% trans 'No movies available.' %}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="popcorn-card fade-in">
+        <h1>{{ title }}</h1>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{% trans 'Poster' %}</th>
+                        <th>{% trans 'Title' %}</th>
+                        <th>{% trans 'Year' %}</th>
+                        <th>{% trans 'Director' %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in movies %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'movie_detail' movie.movie.id %}">
+                                    {% if movie.poster_url %}
+                                        <img src="{{ movie.poster_url }}" alt="{{ movie.translated_title }}" class="movie-poster">
+                                    {% else %}
+                                        <div class="text-center" style="width: 92px;">-</div>
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td><a href="{% url 'movie_detail' movie.movie.id %}">{{ movie.translated_title }}</a></td>
+                            <td>{{ movie.year }}</td>
+                            <td>{{ movie.director }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="empty-state">
+                                <i class="fas fa-film popcorn-icon popcorn-icon-large bounce"></i>
+                                <p>{% trans 'No movies available.' %}</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
+=======
+=======

@@ -4,49 +4,78 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <div style="display: flex; gap: 30px; margin-bottom: 30px;">
-        <div style="flex-shrink: 0;">
-            {% if poster_url %}
-                <img src="{{ poster_url }}" alt="{{ translated_title }}" style="width: 300px; height: auto; border-radius: 8px;">
+    <div class="popcorn-card fade-in">
+        <div style="display: flex; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                {% if poster_url %}
+                    <img src="{{ poster_url }}" alt="{{ translated_title }}" style="width: 100%; max-width: 300px; height: auto; border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                {% else %}
+                    <div style="width: 300px; height: 450px; background-color: var(--popcorn-cream); display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); border: 2px dashed var(--popcorn-red);">
+                        <div style="text-align: center; color: var(--popcorn-red);">
+                            <i class="fas fa-image popcorn-icon popcorn-icon-large" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <p>{% trans 'No poster available' %}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div style="flex: 2; min-width: 300px;">
+                <h1 style="margin-bottom: 1.5rem;">{{ translated_title }}</h1>
+                
+                <div class="popcorn-card" style="background-color: var(--popcorn-cream); border-left: 4px solid var(--popcorn-gold);">
+                    <p style="margin-bottom: 0.5rem;"><strong>{% trans 'Original Title' %}:</strong> {{ movie.original_title }}</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>{% trans 'Year' %}:</strong> {{ movie.year }}</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>{% trans 'Director' %}:</strong> {{ movie.director }}</p>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3>{% trans 'Summary' %}</h3>
+                    <p style="line-height: 1.6; color: var(--text-color);">{{ translated_summary }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <h2><i class="fas fa-eye popcorn-icon"></i> {% trans 'My Viewings' %}</h2>
+            {% if viewings %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{% trans 'Date Viewed' %}</th>
+                                <th>{% trans 'Rating' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for viewing in viewings %}
+                                <tr>
+                                    <td>{{ viewing.date }}</td>
+                                    <td><span class="rating">{{ viewing.rating }}</span></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
-                <div style="width: 300px; height: 450px; background-color: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    {% trans 'No poster' %}
+                <div class="empty-state">
+                    <i class="fas fa-eye-slash popcorn-icon popcorn-icon-large bounce"></i>
+                    <p>{% trans 'You have not viewed this movie yet.' %}</p>
+                    <p style="margin-top: 0.5rem;">
+                        <a href="{% url 'add_viewing' %}?movie_id={{ movie.id }}" class="btn btn-outline">
+                            <i class="fas fa-plus popcorn-icon"></i>
+                            {% trans 'Add Viewing' %}
+                        </a>
+                    </p>
                 </div>
             {% endif %}
         </div>
-        <div>
-            <h1>{{ translated_title }}</h1>
-            <p><strong>{% trans 'Original Title' %}:</strong> {{ movie.original_title }}</p>
-            <p><strong>{% trans 'Year' %}:</strong> {{ movie.year }}</p>
-            <p><strong>{% trans 'Director' %}:</strong> {{ movie.director }}</p>
-            <p><strong>{% trans 'Summary' %}:</strong></p>
-            <p>{{ translated_summary }}</p>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <a href="{% url 'movie_list' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left popcorn-icon"></i>
+                {% trans 'Back to Movie List' %}
+            </a>
         </div>
     </div>
-
-    <h2>{% trans 'My Viewings' %}</h2>
-    {% if viewings %}
-        <table>
-            <thead>
-                <tr>
-                    <th>{% trans 'Date Viewed' %}</th>
-                    <th>{% trans 'Rating' %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for viewing in viewings %}
-                    <tr>
-                        <td>{{ viewing.date }}</td>
-                        <td>{{ viewing.rating }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>{% trans 'You have not viewed this movie yet.' %}</p>
-    {% endif %}
-
-    <p style="margin-top: 20px;">
-        <a href="{% url 'movie_list' %}">&larr; {% trans 'Back to Movie List' %}</a>
-    </p>
 {% endblock %}
+=======
+=======
