@@ -713,14 +713,8 @@ button i, .btn i {
 /* Popcorn Rating Display */
 .rating {
     display: inline-block;
-    background: repeating-linear-gradient(
-        45deg,
-        var(--popcorn-gold) 0px,
-        var(--popcorn-gold) 10px,
-        var(--popcorn-red) 10px,
-        var(--popcorn-red) 20px
-    );
-    color: white;
+    background: var(--popcorn-gold);
+    color: var(--popcorn-red-dark);
     padding: 0.3rem 0.6rem;
     border-radius: 2rem;
     font-weight: 700;
@@ -739,6 +733,171 @@ button i, .btn i {
     text-align: center;
     padding: 3rem 1rem;
     color: var(--popcorn-red);
+}
+
+/* My Viewings Page - Enhanced Display */
+.viewing-date-group {
+    margin-bottom: 2rem;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.viewing-date-header {
+    display: inline-block;
+    background: white;
+    padding: 0.8rem 1.5rem;
+    color: var(--popcorn-red-dark);
+    border: 2px solid var(--popcorn-red);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.viewing-date-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--popcorn-gold) 0px,
+        var(--popcorn-gold) 5px,
+        var(--popcorn-red) 5px,
+        var(--popcorn-red) 10px
+    );
+}
+
+.viewing-date-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--popcorn-red-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.viewing-date-title i {
+    font-size: 1.2em;
+}
+
+.viewing-movies-list {
+    background-color: white;
+}
+
+.viewing-movie-card {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: rgba(214, 40, 40, 0.05);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    border-left: 4px solid var(--popcorn-red);
+}
+
+.viewing-movie-card:hover {
+    background-color: rgba(214, 40, 40, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(214, 40, 40, 0.15);
+}
+
+.viewing-movie-poster {
+    flex: 0 0 92px;
+    height: 138px;
+}
+
+.viewing-movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.viewing-movie-poster img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(214, 40, 40, 0.2);
+}
+
+.movie-poster-placeholder {
+    width: 92px;
+    height: 138px;
+    background-color: var(--popcorn-red-light);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.viewing-movie-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.viewing-movie-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: var(--popcorn-red);
+}
+
+.viewing-movie-title a {
+    color: var(--popcorn-red);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.viewing-movie-title a:hover {
+    color: var(--popcorn-red-dark);
+    text-decoration: underline;
+}
+
+.viewing-movie-meta {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--popcorn-red-light);
+    margin: 0.5rem 0;
+}
+
+.viewing-movie-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.viewing-movie-rating i {
+    color: var(--popcorn-gold);
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments for my viewings */
+@media (max-width: 768px) {
+    .viewing-movie-card {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .viewing-movie-poster {
+        flex: 0 0 auto;
+    }
+    
+    .viewing-movie-info {
+        align-items: center;
+    }
 }
 
 .empty-state i {

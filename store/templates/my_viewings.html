@@ -8,52 +8,84 @@
     <div class="popcorn-card fade-in">
         <h1>{{ title }}</h1>
         
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>{% trans 'Poster' %}</th>
-                        <th>{% trans 'Movie Title' %}</th>
-                        <th>{% trans 'Year' %}</th>
-                        <th>{% trans 'Director' %}</th>
-                        <th>{% trans 'Date Viewed' %}</th>
-                        <th>{% trans 'Rating' %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for viewing in viewings %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'movie_detail' viewing.movie_id %}">
-                                    {% if viewing.poster_url %}
-                                        <img src="{{ viewing.poster_url }}" alt="{{ viewing.translated_title }}" class="movie-poster">
-                                    {% else %}
-                                        <div class="text-center" style="width: 92px;">-</div>
-                                    {% endif %}
-                                </a>
-                            </td>
-                            <td><a href="{% url 'movie_detail' viewing.movie_id %}">{{ viewing.translated_title }}</a></td>
-                            <td>{{ viewing.year }}</td>
-                            <td>{{ viewing.director }}</td>
-                            <td>{{ viewing.date }}</td>
-                            <td><span class="rating">{{ viewing.rating }}</span></td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="6" class="empty-state">
-                                <i class="fas fa-eye-slash popcorn-icon popcorn-icon-large bounce"></i>
-                                <p>{% trans 'No viewings available.' %}</p>
-                                <p style="font-size: 0.9rem; margin-top: 0.5rem;">
-                                    <a href="{% url 'add_viewing' %}" style="color: var(--popcorn-red);">
-                                        <i class="fas fa-plus popcorn-icon"></i>
-                                        {% trans 'Add your first viewing' %}
-                                    </a>
-                                </p>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        {% if viewings %}
+            <!-- Affichage groupé par date - Approche compatible Django -->
+            {% for viewing in viewings %}
+                {% ifchanged viewing.date %}
+                    {% if not forloop.first %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="viewing-date-group">
+                        <div class="viewing-date-header">
+                            <h3 class="viewing-date-title">
+                                <i class="fas fa-calendar-alt popcorn-icon"></i>
+                                {{ viewing.date }}
+                            </h3>
+                        </div>
+                        <div class="viewing-movies-list">
+                {% endifchanged %}
+                
+                <div class="viewing-movie-card">
+                    <div class="viewing-movie-poster">
+                        <a href="{% url 'movie_detail' viewing.movie_id %}">
+                            {% if viewing.poster_url %}
+                                <img src="{{ viewing.poster_url }}" alt="{{ viewing.translated_title }}" class="movie-poster">
+                            {% else %}
+                                <div class="movie-poster-placeholder">
+                                    <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+                    </div>
+                    
+                    <div class="viewing-movie-info">
+                        <h4 class="viewing-movie-title">
+                            <a href="{% url 'movie_detail' viewing.movie_id %}">{{ viewing.translated_title }}</a>
+                        </h4>
+                        
+                        <div class="viewing-movie-meta">
+                            <span class="viewing-movie-year">{{ viewing.year }}</span>
+                            {% if viewing.director %}
+                                <span class="viewing-movie-director">• {{ viewing.director }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="viewing-movie-rating">
+                            <span class="rating">
+                                <i class="fas fa-star popcorn-icon"></i>
+                                {{ viewing.rating }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                {% ifchanged viewing.date %}
+                    {% if forloop.last %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endifchanged %}
+            {% endfor %}
+            
+            <!-- Fermeture des balises pour le dernier groupe -->
+            {% if viewings %}
+                </div>
+            </div>
+            {% endif %}
+=======
+        {% else %}
+            <!-- État vide amélioré -->
+            <div class="empty-state">
+                <i class="fas fa-eye-slash popcorn-icon popcorn-icon-large bounce"></i>
+                <h3>{% trans 'No viewings available.' %}</h3>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+                    <a href="{% url 'add_viewing' %}" class="btn btn-outline">
+                        <i class="fas fa-plus popcorn-icon"></i>
+                        {% trans 'Add your first viewing' %}
+                    </a>
+                </p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
