@@ -8,6 +8,10 @@ import sys
 import django
 import unittest
 
+# Add the project directory to the Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # Configuration Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'popcorn_box.settings')
 django.setup()

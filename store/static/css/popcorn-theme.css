@@ -44,7 +44,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #e0e0e0;
+    color: #333333;
     min-height: 100vh;
     /* Cinema room with projector light beam effect */
     background-color: #0a0a0a;
@@ -162,12 +162,12 @@ nav.cinema-nav {
     border-bottom: 2px solid var(--cinema-light);
 }
 
-nav.cinema-nav a:not(.active) {
+nav.cinema-nav a:not(.active):not(.nav-brand) {
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-nav.cinema-nav a:not(.active):hover {
+nav.cinema-nav a:not(.active):not(.nav-brand):hover {
     background-color: rgba(255, 255, 255, 0.15);
     border-color: var(--popcorn-gold);
 }
@@ -852,8 +852,8 @@ button i, .btn i {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 1.4rem;
-    font-weight: 800;
+    font-size: 1.2rem;
+    font-weight: 700;
     margin: 0;
     color: var(--popcorn-red-dark);
     text-transform: uppercase;
@@ -925,8 +925,9 @@ button i, .btn i {
 
 .viewing-movie-title {
     margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: var(--popcorn-red);
+    font-weight: 600;
 }
 
 .viewing-movie-title a {
@@ -943,9 +944,10 @@ button i, .btn i {
 .viewing-movie-meta {
     display: flex;
     gap: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--popcorn-red-light);
     margin: 0.5rem 0;
+    font-weight: 500;
 }
 
 .viewing-movie-rating {

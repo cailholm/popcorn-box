@@ -29,10 +29,49 @@ def login_view(request):
                     pass
                 return redirect('my_viewings')
             else:
-                messages.error(request, 'Invalid email or password.')
+                messages.error(request, _('Invalid email or password.'))
         except User.DoesNotExist:
-            messages.error(request, 'Invalid email or password.')
-    return render(request, 'login.html', {'title': _('Welcome to Popcorn Box')})
+            messages.error(request, _('Invalid email or password.'))
+    return render(request, 'login.html', {'title': _('Sign In')})
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password_confirm = request.POST.get('password_confirm')
+
+        # Validation
+        if password != password_confirm:
+            messages.error(request, _('Passwords do not match.'))
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, _('Username already exists.'))
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, _('Email already exists.'))
+        elif len(password) < 6:
+            messages.error(request, _('Password must be at least 6 characters.'))
+        else:
+            # Créer l'utilisateur (actif immédiatement)
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                is_active=True  # Compte actif immédiatement
+            )
+            
+            # Créer le profil utilisateur
+            user_profile = UserProfile.objects.create(
+                user=user,
+                language='en'
+            )
+
+            # Connecter l'utilisateur automatiquement
+            login(request, user)
+            messages.success(request, _('Account created successfully! Welcome to Popcorn Box!'))
+            return redirect('home')
+
+    return render(request, 'signup.html', {'title': _('Sign Up')})
 
 
 def movie_list(request):
@@ -89,8 +128,8 @@ def my_viewings(request):
     except UserProfile.DoesNotExist:
         pass
     
-    # Récupérer les visionnages de l'utilisateur connecté avec les traductions
-    viewings = Viewing.objects.filter(user=request.user).select_related('movie')
+    # Récupérer les visionnages de l'utilisateur connecté avec les traductions (triés par date décroissante)
+    viewings = Viewing.objects.filter(user=request.user).select_related('movie').order_by('-date')
     
     # Ajouter les traductions aux visionnages
     translated_viewings = []
@@ -312,3 +351,118 @@ def search_movies_api(request):
         return JsonResponse({'error': _('Error fetching movie data: {error}').format(error=str(e))}, status=500)
     except Exception as e:
         return JsonResponse({'error': _('An error occurred: {error}').format(error=str(e))}, status=500)
+
+
+def home(request):
+    """
+    Page d'accueil affichant une présentation du site et les films les plus regardés.
+    """
+    # Récupérer la langue de l'utilisateur (ou langue active si non connecté)
+    from django.utils import translation
+    language = translation.get_language()
+    
+    # Récupérer les films les plus regardés au cours des 7 derniers jours
+    from django.db.models import Count
+    from django.utils import timezone
+    from datetime import timedelta
+    
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    
+    # Compter les visionnages par film pour les 7 derniers jours (tous les utilisateurs)
+    popular_movies_qs = Viewing.objects.filter(
+        date__gte=seven_days_ago
+    ).values('movie_id', 'movie__original_title', 'movie__poster_data').annotate(
+        view_count=Count('id')
+    ).order_by('-view_count')[:5]  # Top 5 films
+
+    # Convertir en liste et ajouter les traductions
+    popular_movies = []
+    for movie in popular_movies_qs:
+        movie_data = {
+            'movie_id': movie['movie_id'],
+            'movie_title': movie['movie__original_title'],
+            'poster_url': f"data:image/jpeg;base64,{movie['movie__poster_data']}" if movie['movie__poster_data'] else None,
+            'view_count': movie['view_count'],
+        }
+        try:
+            translation_obj = MovieTranslation.objects.get(
+                movie_id=movie['movie_id'],
+                language=language
+            )
+            movie_data['translated_title'] = translation_obj.title
+        except MovieTranslation.DoesNotExist:
+            movie_data['translated_title'] = movie['movie__original_title']
+        popular_movies.append(movie_data)
+    
+    # Préparer les messages de présentation dans la langue de l'utilisateur
+    welcome_messages = {
+        'en': {
+            'welcome': 'Welcome to Popcorn Box!',
+            'description': 'Track all the movies you watch and discover your viewing habits.',
+            'features': [
+                'Add movies you watch with ratings',
+                'View your complete viewing history',
+                'See statistics about your movie habits',
+                'Multilingual support for international films'
+            ],
+            'popular_title': 'Popular Movies Right Now',
+            'no_viewings': 'No movies watched recently.',
+            'start_tracking': 'Start tracking your movies now!'
+        },
+        'fr': {
+            'welcome': 'Bienvenue sur Popcorn Box !',
+            'description': 'Suivez tous les films que vous regardez et découvrez vos habitudes de visionnage.',
+            'features': [
+                'Ajoutez des films avec des notes',
+                'Consultez votre historique complet',
+                'Voyez des statistiques sur vos habitudes',
+                'Support multilingue pour les films internationaux'
+            ],
+            'popular_title': 'Films populaires en ce moment',
+            'no_viewings': 'Aucun film regardé récemment.',
+            'start_tracking': 'Commencez à suivre vos films maintenant !'
+        },
+        'es': {
+            'welcome': '¡Bienvenido a Popcorn Box!',
+            'description': 'Registra todas las películas que ves y descubre tus hábitos de visualización.',
+            'features': [
+                'Agrega películas con calificaciones',
+                'Ve tu historial completo de visualización',
+                'Ver estadísticas sobre tus hábitos',
+                'Soporte multilingüe para películas internacionales'
+            ],
+            'popular_title': 'Películas populares ahora',
+            'no_viewings': 'No hay películas vistas recientemente.',
+            'start_tracking': '¡Empieza a registrar tus películas ahora!'
+        },
+        'de': {
+            'welcome': 'Willkommen bei Popcorn Box!',
+            'description': 'Verfolgen Sie alle Filme, die Sie anschauen, und entdecken Sie Ihre Sehgewohnheiten.',
+            'features': [
+                'Fügen Sie Filme mit Bewertungen hinzu',
+                'Sehen Sie Ihre vollständige Verlaufsgeschichte',
+                'Sehen Sie Statistiken über Ihre Gewohnheiten',
+                'Mehrsprachige Unterstützung für internationale Filme'
+            ],
+            'popular_title': 'Beliebte Filme jetzt',
+            'no_viewings': 'Keine Filme kürzlich angesehen.',
+            'start_tracking': 'Fangen Sie jetzt an, Ihre Filme zu verfolgen!'
+        }
+    }
+    
+    # Obtenir les messages dans la langue de l'utilisateur
+    messages = welcome_messages.get(language, welcome_messages['en'])
+    
+    context = {
+        'title': messages['welcome'],
+        'welcome_message': messages['welcome'],
+        'description': messages['description'],
+        'features': messages['features'],
+        'popular_title': messages['popular_title'],
+        'no_viewings_message': messages['no_viewings'],
+        'start_tracking_message': messages['start_tracking'],
+        'popular_movies': popular_movies,
+        'language': language
+    }
+    
+    return render(request, 'home.html', context)

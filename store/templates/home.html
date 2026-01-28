@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="popcorn-card fade-in">
+        <h1 style="text-align: center;">
+            <i class="fas fa-home"></i>
+            {{ welcome_message }}
+        </h1>
+
+        <div class="welcome-description">
+            <p>{{ description }}</p>
+        </div>
+
+        <div class="features-list">
+            <h3><i class="fas fa-star"></i> {% trans 'Features' %}:</h3>
+            <ul>
+                {% for feature in features %}
+                <li><i class="fas fa-check-circle"></i> {{ feature }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="get-started-section">
+            {% if user.is_authenticated %}
+                <a href="{% url 'add_viewing' %}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i>
+                    {{ start_tracking_message }}
+                </a>
+            {% else %}
+                <div class="auth-buttons">
+                    <a href="{% url 'login' %}" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        {% trans 'Sign In' %}
+                    </a>
+                    <a href="{% url 'signup' %}" class="btn btn-outline">
+                        <i class="fas fa-user-plus"></i>
+                        {% trans 'Sign Up' %}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Section des films populaires -->
+    <div class="popcorn-card fade-in">
+        <h2 class="popular-movies-title">
+            <i class="fas fa-fire"></i>
+            {{ popular_title }}
+        </h2>
+
+        {% if popular_movies %}
+            <div class="popular-movies-grid">
+                {% for movie in popular_movies %}
+                <div class="popular-movie-card">
+                    <div class="popular-movie-poster">
+                        {% if movie.poster_url %}
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.translated_title }}" class="movie-poster">
+                        {% else %}
+                            <div class="movie-poster-placeholder">
+                                <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="popular-movie-info">
+                        <h4 class="popular-movie-title">{{ movie.translated_title }}</h4>
+                        <div class="popular-movie-meta">
+                            <span class="view-count">
+                                <i class="fas fa-eye"></i>
+                                {{ movie.view_count }} {% trans 'view' %}{% if movie.view_count > 1 %}s{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
+                <p>{{ no_viewings_message }}</p>
+                <a href="{% url 'add_viewing' %}" class="btn btn-outline">
+                    <i class="fas fa-plus"></i>
+                    {{ start_tracking_message }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Styles spécifiques à la page d'accueil */
+    .welcome-description {
+        font-size: 1.1rem;
+        color: var(--text-color);
+        margin: 1.5rem 0;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .features-list {
+        margin: 2rem 0;
+        padding: 1rem;
+        background-color: rgba(214, 40, 40, 0.05);
+        border-radius: var(--border-radius);
+        border-left: 4px solid var(--popcorn-gold);
+    }
+
+    .features-list h3 {
+        color: var(--popcorn-red);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .features-list ul {
+        padding-left: 1.5rem;
+    }
+
+    .features-list li {
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .features-list i {
+        color: var(--popcorn-gold);
+        font-size: 0.9rem;
+    }
+
+    .get-started-section {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .get-started-section .btn {
+        padding: 0.8rem 1.8rem;
+        font-size: 1.1rem;
+    }
+
+    .auth-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .auth-buttons .btn {
+        min-width: 140px;
+    }
+
+    .popular-movies-title {
+        color: var(--popcorn-red);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        border-bottom: 2px solid var(--popcorn-gold);
+        padding-bottom: 0.5rem;
+    }
+
+    .popular-movies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .popular-movie-card {
+        background: white;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+        border: 1px solid var(--popcorn-red-light);
+    }
+
+    .popular-movie-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(214, 40, 40, 0.2);
+        border-color: var(--popcorn-gold);
+    }
+
+    .popular-movie-poster {
+        height: 150px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .popular-movie-poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+    }
+
+    .popular-movie-info {
+        padding: 1rem;
+    }
+
+    .popular-movie-title {
+        font-size: 1rem;
+        color: var(--popcorn-red);
+        margin: 0 0 0.5rem 0;
+        font-weight: 600;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .popular-movie-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: var(--popcorn-red-light);
+    }
+
+    .view-count {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .view-count i {
+        color: var(--popcorn-gold);
+        font-size: 0.9rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .popular-movies-grid {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .popular-movies-grid {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        }
+
+        .features-list ul {
+            padding-left: 1rem;
+        }
+    }
+</style>
+{% endblock %}

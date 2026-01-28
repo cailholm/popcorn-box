@@ -1,8 +1,10 @@
 from django.urls import path
-from .views import login_view, movie_list, logout_view, add_viewing, my_viewings, profile, movie_detail, search_movies_api
+from .views import login_view, signup_view, movie_list, logout_view, add_viewing, my_viewings, profile, movie_detail, search_movies_api, home
 
 urlpatterns = [
+    path('', home, name='home'),
     path('login/', login_view, name='login'),
+    path('signup/', signup_view, name='signup'),
     path('movies/', movie_list, name='movie_list'),
     path('movies/<int:movie_id>/', movie_detail, name='movie_detail'),
     path('logout/', logout_view, name='logout'),

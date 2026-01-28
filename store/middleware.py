@@ -28,6 +28,14 @@ class UserLanguageMiddleware:
             except UserProfile.DoesNotExist:
                 # Si le profil n'existe pas, utiliser la langue par défaut
                 pass
+        else:
+            # Pour les utilisateurs non authentifiés, s'assurer que la langue du navigateur
+            # est utilisée (LocaleMiddleware devrait déjà l'avoir définie)
+            # Nous pouvons vérifier si une langue a été définie par LocaleMiddleware
+            current_language = translation.get_language()
+            if current_language and hasattr(request, 'session'):
+                # S'assurer que la langue est sauvegardée dans la session
+                request.session['_language'] = current_language
         
         response = self.get_response(request)
         return response

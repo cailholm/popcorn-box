@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +10,14 @@
 </head>
 <body>
     {% load i18n %}
-    {% if user.is_authenticated %}
-        <nav class="cinema-nav">
-            <div class="nav-brand popcorn-icon-large">
-                <i class="fas fa-film popcorn-icon popcorn-icon-red"></i>
-                <span>{% trans 'Popcorn Box' %}</span>
-            </div>
-            <div class="nav-links">
+    <nav class="cinema-nav">
+        <a href="{% url 'home' %}" class="nav-brand popcorn-icon-large">
+            <i class="fas fa-film popcorn-icon popcorn-icon-red"></i>
+            <span>{% trans 'Popcorn Box' %}</span>
+        </a>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <!-- Boutons pour utilisateurs connectés -->
                 <a href="{% url 'movie_list' %}" {% if request.resolver_match.url_name == 'movie_list' %}class="active"{% endif %}>
                     <i class="fas fa-film popcorn-icon"></i>
                     <span>{% trans 'Movie List' %}</span>
@@ -37,9 +38,19 @@
                     <i class="fas fa-sign-out-alt popcorn-icon"></i>
                     <span>{% trans 'Logout' %}</span>
                 </a>
-            </div>
-        </nav>
-    {% endif %}
+            {% else %}
+                <!-- Boutons pour utilisateurs non connectés -->
+                <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>
+                    <i class="fas fa-sign-in-alt popcorn-icon"></i>
+                    <span>{% trans 'Login' %}</span>
+                </a>
+                <a href="{% url 'signup' %}" {% if request.resolver_match.url_name == 'signup' %}class="active"{% endif %}>
+                    <i class="fas fa-user-plus popcorn-icon"></i>
+                    <span>{% trans 'Sign Up' %}</span>
+                </a>
+            {% endif %}
+        </div>
+    </nav>
     <main>
         {% if messages %}
             {% for message in messages %}
@@ -52,6 +63,9 @@
         {% block content %}
         {% endblock %}
     </main>
+    
+    <!-- Blocs pour CSS supplémentaire -->
+    {% block extra_css %}{% endblock %}
     
     <!-- Blocs pour JavaScript supplémentaire -->
     {% block extra_js %}{% endblock %}
