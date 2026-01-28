@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie, MovieTranslation, TMDBApiLog
+from .models import Movie, MovieTranslation, TMDBApiLog, UserProfile
 
 
 class MovieTranslationInline(admin.TabularInline):
@@ -25,3 +25,10 @@ class TMDBApiLogAdmin(admin.ModelAdmin):
     search_fields = ('url',)
     readonly_fields = ('url', 'timestamp', 'http_method', 'status_code', 'response')
     ordering = ('-timestamp',)
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'language')
+    search_fields = ('user__username', 'user__email')
+    list_filter = ('language',)

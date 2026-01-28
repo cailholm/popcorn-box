@@ -19,11 +19,13 @@ class UserLanguageMiddleware:
                 user_profile = UserProfile.objects.get(user=request.user)
                 language = user_profile.language
                 
-                # Activer la langue si elle est différente de la langue actuelle
-                if translation.get_language() != language:
-                    translation.activate(language)
-                    if hasattr(request, 'session'):
-                        request.session['_language'] = language
+                # Forcer la langue de l'utilisateur, même si elle est déjà définie
+                # Cela garantit que la langue du profil a la priorité sur la langue du navigateur
+                translation.activate(language)
+                
+                # Sauvegarder la langue dans la session pour s'assurer qu'elle persiste
+                if hasattr(request, 'session'):
+                    request.session['_language'] = language
                     
             except UserProfile.DoesNotExist:
                 # Si le profil n'existe pas, utiliser la langue par défaut

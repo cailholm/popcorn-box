@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-23 10:25+0000\n"
+"POT-Creation-Date: 2026-01-28 16:56+0000\n"
 "PO-Revision-Date: 2026-01-23 10:25+0000\n"
 "Last-Translator: AI Assistant <assistant@mistral.ai>\n"
 "Language-Team: German <de@li.org>\n"
@@ -17,158 +17,290 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: store/templates/add_viewing.html:11
-msgid "Movie Title:"
-msgstr "Filmtitel:"
 
-#: store/templates/add_viewing.html:15
-msgid "Date:"
-msgstr "Datum:"
-
-#: store/templates/add_viewing.html:19
-msgid "Rating (0-5, step 0.5):"
-msgstr "Bewertung (0-5, Schritt 0,5):"
-
-#: store/templates/add_viewing.html:22 store/templates/base.html:105
-msgid "Add Viewing"
-msgstr "Ansicht hinzufügen"
-
-#: store/templates/base.html:102
-msgid "Popcorn Box"
-msgstr ""
-
-#: store/templates/base.html:104
-msgid "Movie List"
-msgstr "Filmliste"
-
-#: store/templates/base.html:106
-msgid "My Viewings"
-msgstr "Meine Ansichten"
-
-#: store/templates/base.html:107
-msgid "Profile"
-msgstr "Profil"
-
-#: store/templates/base.html:102
-msgid "Welcome to Popcorn Box"
-msgstr ""
-
-#: store/templates/add_viewing.html:10
+#: store/templates/add_viewing.html:190
 msgid "Step 1: Search for a movie"
 msgstr "Schritt 1: Nach einem Film suchen"
 
-#: store/templates/add_viewing.html:12
+#: store/templates/add_viewing.html:194
+msgid "Movie Title:"
+msgstr "Filmtitel:"
+
+#: store/templates/add_viewing.html:196
 msgid "Enter movie title..."
 msgstr "Filmtitel eingeben..."
 
-#: store/templates/add_viewing.html:13
+#: store/templates/add_viewing.html:200
 msgid "Search"
 msgstr "Suche"
 
-#: store/templates/add_viewing.html:17
+#: store/templates/add_viewing.html:205
 msgid "Search Results:"
 msgstr "Suchergebnisse:"
 
-#: store/templates/add_viewing.html:26
+#: store/templates/add_viewing.html:212
 msgid "Step 2: Add Viewing Details"
 msgstr "Schritt 2: Ansichtdetails hinzufügen"
 
-#: store/templates/add_viewing.html:32
+#: store/templates/add_viewing.html:219
 msgid "Selected Movie:"
 msgstr "Ausgewählter Film:"
 
-#: store/templates/add_viewing.html:70
+#: store/templates/add_viewing.html:224
+msgid "Date:"
+msgstr "Datum:"
+
+#: store/templates/add_viewing.html:229
+msgid "Rating (0-5, step 0.5):"
+msgstr "Bewertung (0-5, Schritt 0,5):"
+
+#: store/templates/add_viewing.html:236 store/templates/base.html:27
+#: store/templates/movie_detail.html:65 store/views.py:236 store/views.py:239
+#: store/views.py:254 tests/test_final_translation.py:41
+msgid "Add Viewing"
+msgstr "Ansicht hinzufügen"
+
+#: store/templates/add_viewing.html:253 store/views.py:300
 msgid "Please enter at least 2 characters"
 msgstr "Bitte geben Sie mindestens 2 Zeichen ein"
 
-#: store/templates/add_viewing.html:105
-msgid "No description available"
-msgstr "Keine Beschreibung verfügbar"
-
-#: store/templates/add_viewing.html:74
+#: store/templates/add_viewing.html:254
 msgid "Searching..."
 msgstr "Suche..."
 
-#: store/templates/add_viewing.html:82
+#: store/templates/add_viewing.html:255
 msgid "No movies found. Try a different search."
 msgstr "Keine Filme gefunden. Versuchen Sie eine andere Suche."
 
-#: store/templates/add_viewing.html:100
+#: store/templates/add_viewing.html:256
 msgid "An error occurred while searching for movies."
 msgstr "Bei der Suche nach Filmen ist ein Fehler aufgetreten."
 
-#: store/templates/base.html:108
+#: store/templates/add_viewing.html:257
+msgid "No description available"
+msgstr "Keine Beschreibung verfügbar"
+
+#: store/templates/add_viewing.html:258
+msgid "Previous"
+msgstr ""
+
+#: store/templates/add_viewing.html:259
+msgid "Next"
+msgstr ""
+
+#: store/templates/add_viewing.html:260
+msgid "Page"
+msgstr ""
+
+#: store/templates/add_viewing.html:261
+msgid "of"
+msgstr ""
+
+#: store/templates/base.html:16
+msgid "Popcorn Box"
+msgstr ""
+
+#: store/templates/base.html:23 store/views.py:108
+#: tests/test_final_translation.py:38
+msgid "Movie List"
+msgstr "Filmliste"
+
+#: store/templates/base.html:31 store/templates/movie_detail.html:38
+#: store/views.py:150 tests/test_final_translation.py:39
+msgid "My Viewings"
+msgstr "Meine Ansichten"
+
+#: store/templates/base.html:35 store/views.py:172
+#: tests/test_final_translation.py:40
+msgid "Profile"
+msgstr "Profil"
+
+#: store/templates/base.html:39
 msgid "Logout"
 msgstr "Abmelden"
 
-#: store/templates/login.html:11
-msgid "Email:"
-msgstr "E-Mail:"
-
-#: store/templates/login.html:15
-msgid "Password:"
-msgstr "Passwort:"
-
-#: store/templates/login.html:18
+#: store/templates/base.html:45 store/templates/login.html:24
 msgid "Login"
 msgstr "Anmelden"
 
-#: store/templates/movie_list.html:11
-msgid "Title"
-msgstr "Titel"
+#: store/templates/base.html:49 store/templates/home.html:40
+#: store/templates/login.html:28 store/views.py:74
+msgid "Sign Up"
+msgstr ""
 
-#: store/templates/movie_list.html:12 store/templates/my_viewings.html:12
+#: store/templates/home.html:18
+msgid "Features"
+msgstr ""
+
+#: store/templates/home.html:36 store/templates/signup.html:36
+#: store/views.py:35
+msgid "Sign In"
+msgstr ""
+
+#: store/templates/home.html:72
+msgid "view"
+msgstr ""
+
+#: store/templates/login.html:15 store/templates/signup.html:19
+msgid "Email:"
+msgstr "E-Mail:"
+
+#: store/templates/login.html:19 store/templates/signup.html:23
+msgid "Password:"
+msgstr "Passwort:"
+
+#: store/templates/login.html:28
+msgid "Don't have an account?"
+msgstr ""
+
+#: store/templates/movie_detail.html:16
+#, fuzzy
+#| msgid "No movies available."
+msgid "No poster available"
+msgstr "Keine Filme verfügbar."
+
+#: store/templates/movie_detail.html:25
+msgid "Original Title"
+msgstr ""
+
+#: store/templates/movie_detail.html:26 store/templates/movie_list.html:17
 msgid "Year"
 msgstr "Jahr"
 
-#: store/templates/movie_list.html:13 store/templates/my_viewings.html:13
+#: store/templates/movie_detail.html:27 store/templates/movie_list.html:18
 msgid "Director"
 msgstr "Regisseur"
 
-#: store/templates/movie_list.html:14
+#: store/templates/movie_detail.html:31
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: store/templates/movie_list.html:27
-msgid "No movies available."
-msgstr "Keine Filme verfügbar."
-
-#: store/templates/my_viewings.html:11
-msgid "Movie Title"
-msgstr "Filmtitel"
-
-#: store/templates/my_viewings.html:14
+#: store/templates/movie_detail.html:44
 msgid "Date Viewed"
 msgstr "Ansichtdatum"
 
-#: store/templates/my_viewings.html:15
+#: store/templates/movie_detail.html:45
 msgid "Rating"
 msgstr "Bewertung"
 
-#: store/templates/my_viewings.html:29
+#: store/templates/movie_detail.html:61
+msgid "You have not viewed this movie yet."
+msgstr ""
+
+#: store/templates/movie_detail.html:75
+#, fuzzy
+#| msgid "Movie List"
+msgid "Back to Movie List"
+msgstr "Filmliste"
+
+#: store/templates/movie_list.html:15
+msgid "Poster"
+msgstr ""
+
+#: store/templates/movie_list.html:16
+msgid "Title"
+msgstr "Titel"
+
+#: store/templates/movie_list.html:41
+msgid "No movies available."
+msgstr "Keine Filme verfügbar."
+
+#: store/templates/my_viewings.html:81
 msgid "No viewings available."
 msgstr "Keine Ansichten verfügbar."
 
-#: store/templates/profile.html:11
+#: store/templates/my_viewings.html:85
+msgid "Add your first viewing"
+msgstr "Fügen Sie Ihre erste Ansicht hinzu"
+
+#: store/templates/profile.html:15
 msgid "Language:"
 msgstr "Sprache:"
 
-#: store/templates/profile.html:13
+#: store/templates/profile.html:17
 msgid "English"
 msgstr "Englisch"
 
-#: store/templates/profile.html:14
+#: store/templates/profile.html:18
 msgid "French"
 msgstr "Französisch"
 
-#: store/templates/profile.html:15
+#: store/templates/profile.html:19
 msgid "German"
 msgstr "Deutsch"
 
-#: store/templates/profile.html:16
+#: store/templates/profile.html:20
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: store/templates/profile.html:19
+#: store/templates/profile.html:25
 msgid "Update Language"
 msgstr "Sprache aktualisieren"
+
+#: store/templates/profile.html:32
+#, fuzzy
+#| msgid "Language:"
+msgid "Current language:"
+msgstr "Sprache:"
+
+#: store/templates/signup.html:15
+msgid "Username:"
+msgstr ""
+
+#: store/templates/signup.html:27
+#, fuzzy
+#| msgid "Password:"
+msgid "Confirm Password:"
+msgstr "Passwort:"
+
+#: store/templates/signup.html:32
+msgid "Create Account"
+msgstr ""
+
+#: store/templates/signup.html:36
+msgid "Already have an account?"
+msgstr ""
+
+#: store/views.py:32 store/views.py:34
+msgid "Invalid email or password."
+msgstr ""
+
+#: store/views.py:47
+msgid "Passwords do not match."
+msgstr ""
+
+#: store/views.py:49
+msgid "Username already exists."
+msgstr ""
+
+#: store/views.py:51
+msgid "Email already exists."
+msgstr ""
+
+#: store/views.py:53
+#, fuzzy
+#| msgid "Please enter at least 2 characters"
+msgid "Password must be at least 6 characters."
+msgstr "Bitte geben Sie mindestens 2 Zeichen ein"
+
+#: store/views.py:71
+msgid "Account created successfully! Welcome to Popcorn Box!"
+msgstr ""
+
+#: store/views.py:351
+#, python-brace-format
+msgid "Error fetching movie data: {error}"
+msgstr ""
+
+#: store/views.py:353
+#, fuzzy, python-brace-format
+#| msgid "An error occurred while searching for movies."
+msgid "An error occurred: {error}"
+msgstr "Bei der Suche nach Filmen ist ein Fehler aufgetreten."
+
+#: tests/test_final_translation.py:37
+msgid "Welcome to Popcorn Box"
+msgstr ""
+
+#~ msgid "Movie Title"
+#~ msgstr "Filmtitel"
