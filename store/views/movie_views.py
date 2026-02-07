@@ -29,7 +29,7 @@ def movie_list(request):
         try:
             translation = MovieTranslation.objects.get(movie=movie, language=language)
             movie.title = translation.title
-            movie.overview = translation.overview
+            movie.overview = translation.summary  # Utiliser summary au lieu de overview
         except MovieTranslation.DoesNotExist:
             pass  # Garder les valeurs originales
         translated_movies.append(movie)
@@ -55,7 +55,7 @@ def movie_detail(request, movie_id):
     try:
         translation = MovieTranslation.objects.get(movie=movie, language=language)
         movie.title = translation.title
-        movie.overview = translation.overview
+        movie.overview = translation.summary  # Utiliser summary au lieu de overview
     except MovieTranslation.DoesNotExist:
         pass  # Garder les valeurs originales
     
