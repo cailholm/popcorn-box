@@ -1,4 +1,4 @@
-from django.utils import translation
+from django.utils.translation import activate, get_language
 from django.contrib.auth.models import User
 from .models import UserProfile
 
@@ -21,11 +21,13 @@ class UserLanguageMiddleware:
                 
                 # Forcer la langue de l'utilisateur, même si elle est déjà définie
                 # Cela garantit que la langue du profil a la priorité sur la langue du navigateur
-                translation.activate(language)
+                activate(language)
+                request.LANGUAGE_CODE = language
                 
                 # Sauvegarder la langue dans la session pour s'assurer qu'elle persiste
                 if hasattr(request, 'session'):
                     request.session['_language'] = language
+                    request.session['django_language'] = language
                     
             except UserProfile.DoesNotExist:
                 # Si le profil n'existe pas, utiliser la langue par défaut
@@ -34,10 +36,19 @@ class UserLanguageMiddleware:
             # Pour les utilisateurs non authentifiés, s'assurer que la langue du navigateur
             # est utilisée (LocaleMiddleware devrait déjà l'avoir définie)
             # Nous pouvons vérifier si une langue a été définie par LocaleMiddleware
-            current_language = translation.get_language()
-            if current_language and hasattr(request, 'session'):
-                # S'assurer que la langue est sauvegardée dans la session
-                request.session['_language'] = current_language
+            try:
+                current_language = get_language()
+                if current_language and hasattr(request, 'session'):
+                    # S'assurer que la langue est sauvegardée dans la session
+                    request.session['_language'] = current_language
+                    request.session['django_language'] = current_language
+                    request.LANGUAGE_CODE = current_language
+            except:
+                # Si quelque chose ne va pas, utiliser l'anglais par défaut
+                if hasattr(request, 'session'):
+                    request.session['_language'] = 'en'
+                    request.session['django_language'] = 'en'
+                request.LANGUAGE_CODE = 'en'
         
         response = self.get_response(request)
         return response

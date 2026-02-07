@@ -23,7 +23,7 @@ def add_viewing(request):
                 movie=movie,
                 rating=rating if rating else None,
                 review=review,
-                date_watched=timezone.now()
+                date=timezone.now()
             )
             
             messages.success(request, _('Viewing added successfully!'))
@@ -39,7 +39,7 @@ def add_viewing(request):
 @login_required
 def my_viewings(request):
     # Récupérer tous les visionnages de l'utilisateur
-    viewings = Viewing.objects.filter(user=request.user).order_by('-date_watched')
+    viewings = Viewing.objects.filter(user=request.user).order_by('-date')
     
     # Récupérer la langue de l'utilisateur
     language = 'en'  # Langue par défaut
@@ -52,7 +52,7 @@ def my_viewings(request):
     # Grouper les visionnages par date
     viewings_by_date = {}
     for viewing in viewings:
-        date_str = viewing.date_watched.strftime('%Y-%m-%d')
+        date_str = viewing.date.strftime('%Y-%m-%d')
         if date_str not in viewings_by_date:
             viewings_by_date[date_str] = []
         

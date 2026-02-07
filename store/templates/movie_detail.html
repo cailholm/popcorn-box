@@ -7,8 +7,8 @@
     <div class="popcorn-card fade-in">
         <div style="display: flex; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 300px;">
-                {% if poster_url %}
-                    <img src="{{ poster_url }}" alt="{{ translated_title }}" style="width: 100%; max-width: 300px; height: auto; border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                {% if movie.get_poster_url %}
+                    <img src="{{ movie.get_poster_url }}" alt="{{ translated_title }}" style="width: 100%; max-width: 300px; height: auto; border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
                 {% else %}
                     <div style="width: 300px; height: 450px; background-color: var(--popcorn-cream); display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); border: 2px dashed var(--popcorn-red);">
                         <div style="text-align: center; color: var(--popcorn-red);">
@@ -19,7 +19,7 @@
                 {% endif %}
             </div>
             <div style="flex: 2; min-width: 300px;">
-                <h1 style="margin-bottom: 1.5rem;">{{ translated_title }}</h1>
+                <h1 style="margin-bottom: 1.5rem;">{{ movie.title }}</h1>
                 
                 <div class="popcorn-card" style="background-color: var(--popcorn-cream); border-left: 4px solid var(--popcorn-gold);">
                     <p style="margin-bottom: 0.5rem;"><strong>{% trans 'Original Title' %}:</strong> {{ movie.original_title }}</p>
@@ -29,7 +29,7 @@
                 
                 <div style="margin-top: 1.5rem;">
                     <h3>{% trans 'Summary' %}</h3>
-                    <p style="line-height: 1.6; color: var(--text-color);">{{ translated_summary }}</p>
+                    <p style="line-height: 1.6; color: var(--text-color);">{{ movie.overview }}</p>
                 </div>
             </div>
         </div>

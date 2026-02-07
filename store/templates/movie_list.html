@@ -23,14 +23,14 @@
                         <tr>
                             <td>
                                 <a href="{% url 'movie_detail' movie.id %}">
-                                    {% if movie.poster_url %}
-                                        <img src="{{ movie.poster_url }}" alt="{{ movie.translated_title }}" class="movie-poster">
+                                    {% if movie.get_poster_url %}
+                                        <img src="{{ movie.get_poster_url }}" alt="{{ movie.title }}" class="movie-poster">
                                     {% else %}
                                         <div class="text-center" style="width: 92px;">-</div>
                                     {% endif %}
                                 </a>
                             </td>
-                            <td><a href="{% url 'movie_detail' movie.id %}">{{ movie.translated_title }}</a></td>
+                            <td><a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a></td>
                             <td>{{ movie.year }}</td>
                             <td>{{ movie.director }}</td>
                         </tr>

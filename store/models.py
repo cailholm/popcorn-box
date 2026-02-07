@@ -177,6 +177,7 @@ class Viewing(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     date = models.DateField()
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
+    review = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.email} viewed {self.movie.original_title} on {self.date}"

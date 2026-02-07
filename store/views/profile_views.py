@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, activate, get_language
+from django.utils import translation as translation_utils
 from ..models import UserProfile, Movie
 from ..helpers import TMDBClient
 
@@ -14,6 +15,13 @@ def home(request):
             language = user_profile.language if user_profile.language else 'en'
         except:
             pass
+        
+        # La langue devrait déjà être activée par le middleware
+        # Mais nous pouvons vérifier et réactiver si nécessaire
+        current_lang = translation_utils.get_language()
+        if current_lang != language:
+            translation_utils.activate(language)
+            request.LANGUAGE_CODE = language
         
         # Récupérer un film aléatoire
         random_movie = None
@@ -36,15 +44,7 @@ def home(request):
                 except MovieTranslation.DoesNotExist:
                     # Utiliser les valeurs originales si pas de traduction
                     random_movie.translated_title = random_movie.original_title
-                    # Si pas de poster, essayer de le récupérer depuis TMDB
-                    poster_url = random_movie.get_poster_url()
-                    if not poster_url and random_movie.tmdb_id:
-                        tmdb_client = TMDBClient()
-                        tmdb_movie = tmdb_client.get_movie_details(random_movie.tmdb_id, language=language)
-                        if tmdb_movie and tmdb_movie.get('poster_path'):
-                            poster_url = f"https://image.tmdb.org/t/p/w500{tmdb_movie['poster_path']}"
-                    
-                    random_movie.poster_url = poster_url
+                    # La méthode get_poster_url() est utilisée directement dans le template
         except Exception as e:
             # En cas d'erreur, nous aurons random_movie = None
             print(f"Error getting random movie: {e}")
@@ -64,32 +64,35 @@ def home(request):
                     translation = MovieTranslation.objects.get(movie=movie, language=language)
                     movie.translated_title = translation.title
                 except MovieTranslation.DoesNotExist:
-                    movie.translated_title = movie.title
+                    movie.translated_title = movie.original_title
         except:
             pass
         
-        # Messages traduits pour le template
+        # Messages pour le template (seront traduits par le template)
         context = {
-            'title': _('Home'),
+            'title': 'Home',
             'user_language': language,
-            'welcome_message': _('Welcome to Popcorn Box'),
-            'description': _('Track your movie viewings, discover new films, and share your favorites with friends!'),
+            'welcome_message': 'Welcome to Popcorn Box',
+            'description': 'Track your movie viewings, discover new films, and share your favorites with friends!',
             'features': [
-                _('Track all your movie viewings in one place'),
-                _('Discover popular movies among users'),
-                _('Multilingual support for international films'),
-                _('Beautiful and intuitive interface'),
-                _('Share your movie preferences with friends')
+                'Track all your movie viewings in one place',
+                'Discover popular movies among users',
+                'Multilingual support for international films',
+                'Beautiful and intuitive interface',
+                'Share your movie preferences with friends'
             ],
-            'start_tracking_message': _('Start Tracking Viewings'),
-            'popular_title': _('Popular Movies'),
-            'no_viewings_message': _('No viewings yet. Start tracking your movies!'),
+            'start_tracking_message': 'Start Tracking Viewings',
+            'popular_title': 'Popular Movies',
+            'no_viewings_message': 'No viewings yet. Start tracking your movies!',
             'random_movie': random_movie,
             'popular_movies': popular_movies
         }
         
         return render(request, 'home.html', context)
     else:
+        # Activer la langue par défaut pour les utilisateurs non connectés
+        translation_utils.activate('en')
+        request.LANGUAGE_CODE = translation_utils.get_language()
         return redirect('login')
 
 @login_required
@@ -117,11 +120,10 @@ def profile(request):
     # Récupérer les informations actuelles du profil
     try:
         user_profile = request.user.userprofile
-        current_language = user_profile.language if user_profile.language else 'en'
     except UserProfile.DoesNotExist:
-        current_language = 'en'
+        user_profile = None
     
     return render(request, 'profile.html', {
         'title': _('Profile'),
-        'current_language': current_language
+        'user_profile': user_profile
     })

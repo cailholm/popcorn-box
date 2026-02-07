@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie, MovieTranslation, TMDBApiLog, UserProfile
+from .models import Movie, MovieTranslation, TMDBApiLog, UserProfile, Viewing
 
 
 class MovieTranslationInline(admin.TabularInline):
@@ -32,3 +32,12 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'language')
     search_fields = ('user__username', 'user__email')
     list_filter = ('language',)
+
+
+@admin.register(Viewing)
+class ViewingAdmin(admin.ModelAdmin):
+    list_display = ('user', 'movie', 'date', 'rating')
+    list_filter = ('user', 'date', 'rating')
+    search_fields = ('user__username', 'user__email', 'movie__original_title')
+    date_hierarchy = 'date'
+    ordering = ('-date',)

@@ -16,3 +16,11 @@ Use `@/openspec/AGENTS.md` to learn:
 Keep this managed block so 'openspec update' can refresh the instructions.
 
 <!-- OPENSPEC:END -->
+
+Never commit or push automatically : validation is manual
+
+Comments are always in English
+
+Always use and activate Python virtual env located in venv directory
+
+By default, runserver is already launched on port 8000, if not start it automatically

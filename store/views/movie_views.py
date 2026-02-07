@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
-from ..models import Movie, MovieTranslation
+from ..models import Movie, MovieTranslation, Viewing
 from ..helpers import TMDBClient
 import requests
 
@@ -59,9 +59,13 @@ def movie_detail(request, movie_id):
     except MovieTranslation.DoesNotExist:
         pass  # Garder les valeurs originales
     
+    # Récupérer les visionnages de l'utilisateur pour ce film
+    viewings = Viewing.objects.filter(user=request.user, movie=movie).order_by('-date')
+    
     return render(request, 'movie_detail.html', {
         'movie': movie,
-        'title': movie.title
+        'title': movie.title,
+        'viewings': viewings
     })
 
 def search_movies_api(request):

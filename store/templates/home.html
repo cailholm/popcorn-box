@@ -56,8 +56,8 @@
             {% if random_movie %}
                 <div class="random-movie-content">
                     <div class="random-movie-poster">
-                        {% if random_movie.poster_url %}
-                            <img src="{{ random_movie.poster_url }}" alt="{{ random_movie.translated_title }}" class="movie-poster">
+                        {% if random_movie.get_poster_url %}
+                            <img src="{{ random_movie.get_poster_url }}" alt="{{ random_movie.translated_title }}" class="movie-poster">
                         {% else %}
                             <div class="movie-poster-placeholder">
                                 <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
@@ -112,8 +112,8 @@
                 {% for movie in popular_movies %}
                 <div class="popular-movie-card">
                     <div class="popular-movie-poster">
-                        {% if movie.poster_url %}
-                            <img src="{{ movie.poster_url }}" alt="{{ movie.translated_title }}" class="movie-poster">
+                        {% if movie.get_poster_url %}
+                            <img src="{{ movie.get_poster_url }}" alt="{{ movie.translated_title }}" class="movie-poster">
                         {% else %}
                             <div class="movie-poster-placeholder">
                                 <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>

@@ -8,72 +8,55 @@
     <div class="popcorn-card fade-in">
         <h1>{{ title }}</h1>
         
-        {% if viewings %}
-            <!-- Affichage groupé par date - Approche compatible Django -->
-            {% for viewing in viewings %}
-                {% ifchanged viewing.date %}
-                    {% if not forloop.first %}
-                        </div>
+        {% if viewings_by_date %}
+            <!-- Affichage groupé par date -->
+            {% for date, viewings in viewings_by_date.items %}
+                <div class="viewing-date-group">
+                    <div class="viewing-date-header">
+                        <h3 class="viewing-date-title">
+                            <i class="fas fa-calendar-alt popcorn-icon"></i>
+                            {{ date }}
+                        </h3>
                     </div>
-                    {% endif %}
-                    <div class="viewing-date-group">
-                        <div class="viewing-date-header">
-                            <h3 class="viewing-date-title">
-                                <i class="fas fa-calendar-alt popcorn-icon"></i>
-                                {{ viewing.date }}
-                            </h3>
-                        </div>
-                        <div class="viewing-movies-list">
-                {% endifchanged %}
-                
-                <div class="viewing-movie-card">
-                    <div class="viewing-movie-poster">
-                        <a href="{% url 'movie_detail' viewing.movie_id %}">
-                            {% if viewing.poster_url %}
-                                <img src="{{ viewing.poster_url }}" alt="{{ viewing.translated_title }}" class="movie-poster">
-                            {% else %}
-                                <div class="movie-poster-placeholder">
-                                    <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
+                    <div class="viewing-movies-list">
+                        {% for viewing in viewings %}
+                        <div class="viewing-movie-card">
+                            <div class="viewing-movie-poster">
+                                <a href="{% url 'movie_detail' viewing.movie_id %}">
+                                    {% if viewing.movie.get_poster_url %}
+                                        <img src="{{ viewing.movie.get_poster_url }}" alt="{{ viewing.translated_title }}" class="movie-poster">
+                                    {% else %}
+                                        <div class="movie-poster-placeholder">
+                                            <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            
+                            <div class="viewing-movie-info">
+                                <h4 class="viewing-movie-title">
+                                    <a href="{% url 'movie_detail' viewing.movie_id %}">{{ viewing.translated_title }}</a>
+                                </h4>
+                                
+                                <div class="viewing-movie-meta">
+                                    <span class="viewing-movie-year">{{ viewing.movie.year }}</span>
+                                    {% if viewing.movie.director %}
+                                        <span class="viewing-movie-director">• {{ viewing.movie.director }}</span>
+                                    {% endif %}
                                 </div>
-                            {% endif %}
-                        </a>
-                    </div>
-                    
-                    <div class="viewing-movie-info">
-                        <h4 class="viewing-movie-title">
-                            <a href="{% url 'movie_detail' viewing.movie_id %}">{{ viewing.translated_title }}</a>
-                        </h4>
-                        
-                        <div class="viewing-movie-meta">
-                            <span class="viewing-movie-year">{{ viewing.year }}</span>
-                            {% if viewing.director %}
-                                <span class="viewing-movie-director">• {{ viewing.director }}</span>
-                            {% endif %}
+                                
+                                <div class="viewing-movie-rating">
+                                    <span class="rating">
+                                        <i class="fas fa-star popcorn-icon"></i>
+                                        {{ viewing.rating }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="viewing-movie-rating">
-                            <span class="rating">
-                                <i class="fas fa-star popcorn-icon"></i>
-                                {{ viewing.rating }}
-                            </span>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-                
-                {% ifchanged viewing.date %}
-                    {% if forloop.last %}
-                        </div>
-                    </div>
-                    {% endif %}
-                {% endifchanged %}
             {% endfor %}
-            
-            <!-- Fermeture des balises pour le dernier groupe -->
-            {% if viewings %}
-                </div>
-            </div>
-            {% endif %}
-=======
         {% else %}
             <!-- État vide amélioré -->
             <div class="empty-state">
