@@ -14,10 +14,81 @@ def home(request):
         except:
             pass
         
-        return render(request, 'home.html', {
+        # Récupérer un film aléatoire
+        random_movie = None
+        try:
+            from ..models import Movie, MovieTranslation
+            from ..helpers import TMDBClient
+            import random
+            
+            # Récupérer tous les films de la base de données
+            all_movies = list(Movie.objects.all())
+            
+            if all_movies:
+                # Sélectionner un film aléatoire
+                random_movie = random.choice(all_movies)
+                
+                # Essayer de récupérer la traduction
+                try:
+                    translation = MovieTranslation.objects.get(movie=random_movie, language=language)
+                    random_movie.translated_title = translation.title
+                    random_movie.overview = translation.summary  # Utiliser summary au lieu de overview
+                except MovieTranslation.DoesNotExist:
+                    # Utiliser les valeurs originales si pas de traduction
+                    random_movie.translated_title = random_movie.title
+                    # Si pas de poster, essayer de le récupérer depuis TMDB
+                    poster_url = random_movie.get_poster_url()
+                    if not poster_url and random_movie.tmdb_id:
+                        tmdb_client = TMDBClient()
+                        tmdb_movie = tmdb_client.get_movie_details(random_movie.tmdb_id, language=language)
+                        if tmdb_movie and tmdb_movie.get('poster_path'):
+                            poster_url = f"https://image.tmdb.org/t/p/w500{tmdb_movie['poster_path']}"
+                    
+                    random_movie.poster_url = poster_url
+        except Exception as e:
+            # En cas d'erreur, nous aurons random_movie = None
+            print(f"Error getting random movie: {e}")
+        
+        # Récupérer les films populaires (visionnages les plus fréquents)
+        popular_movies = []
+        try:
+            from django.db.models import Count
+            # Récupérer les films avec le plus de visionnages
+            popular_movies = list(Movie.objects.annotate(
+                view_count=Count('viewing')
+            ).order_by('-view_count')[:6])
+            
+            # Ajouter les titres traduits
+            for movie in popular_movies:
+                try:
+                    translation = MovieTranslation.objects.get(movie=movie, language=language)
+                    movie.translated_title = translation.title
+                except MovieTranslation.DoesNotExist:
+                    movie.translated_title = movie.title
+        except:
+            pass
+        
+        # Messages traduits pour le template
+        context = {
             'title': _('Home'),
-            'user_language': language
-        })
+            'user_language': language,
+            'welcome_message': _('Welcome to Popcorn Box'),
+            'description': _('Track your movie viewings, discover new films, and share your favorites with friends!'),
+            'features': [
+                _('Track all your movie viewings in one place'),
+                _('Discover popular movies among users'),
+                _('Multilingual support for international films'),
+                _('Beautiful and intuitive interface'),
+                _('Share your movie preferences with friends')
+            ],
+            'start_tracking_message': _('Start Tracking Viewings'),
+            'popular_title': _('Popular Movies'),
+            'no_viewings_message': _('No viewings yet. Start tracking your movies!'),
+            'random_movie': random_movie,
+            'popular_movies': popular_movies
+        }
+        
+        return render(request, 'home.html', context)
     else:
         return redirect('login')
 

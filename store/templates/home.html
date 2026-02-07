@@ -4,41 +4,97 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <div class="popcorn-card fade-in">
-        <h1 style="text-align: center;">
-            <i class="fas fa-home"></i>
-            {{ welcome_message }}
-        </h1>
+    <div class="home-content-grid">
+        <!-- Left column: Welcome section -->
+        <div class="welcome-column popcorn-card fade-in">
+            <h1 style="text-align: center;">
+                <i class="fas fa-home"></i>
+                {{ welcome_message }}
+            </h1>
 
-        <div class="welcome-description">
-            <p>{{ description }}</p>
+            <div class="welcome-description">
+                <p>{{ description }}</p>
+            </div>
+
+            <div class="features-list">
+                <h3><i class="fas fa-star"></i> {% trans 'Features' %}:</h3>
+                <ul>
+                    {% for feature in features %}
+                    <li><i class="fas fa-check-circle"></i> {{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="get-started-section">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'add_viewing' %}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i>
+                        {{ start_tracking_message }}
+                    </a>
+                {% else %}
+                    <div class="auth-buttons">
+                        <a href="{% url 'login' %}" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            {% trans 'Sign In' %}
+                        </a>
+                        <a href="{% url 'signup' %}" class="btn btn-outline">
+                            <i class="fas fa-user-plus"></i>
+                            {% trans 'Sign Up' %}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="features-list">
-            <h3><i class="fas fa-star"></i> {% trans 'Features' %}:</h3>
-            <ul>
-                {% for feature in features %}
-                <li><i class="fas fa-check-circle"></i> {{ feature }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+        <!-- Right column: Random movie -->
+        <div class="random-movie-column popcorn-card fade-in">
+            <h2 class="random-movie-title">
+                <i class="fas fa-dice"></i>
+                {% trans 'A Random Movie' %}
+            </h2>
 
-        <div class="get-started-section">
-            {% if user.is_authenticated %}
-                <a href="{% url 'add_viewing' %}" class="btn btn-primary">
-                    <i class="fas fa-plus-circle"></i>
-                    {{ start_tracking_message }}
-                </a>
+            {% if random_movie %}
+                <div class="random-movie-content">
+                    <div class="random-movie-poster">
+                        {% if random_movie.poster_url %}
+                            <img src="{{ random_movie.poster_url }}" alt="{{ random_movie.translated_title }}" class="movie-poster">
+                        {% else %}
+                            <div class="movie-poster-placeholder">
+                                <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="random-movie-info">
+                        <h3 class="random-movie-name">{{ random_movie.translated_title }}</h3>
+                        
+                        {% if random_movie.release_date %}
+                            <div class="random-movie-year">
+                                <i class="fas fa-calendar-alt"></i>
+                                {{ random_movie.release_date|date:"Y" }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="random-movie-overview">
+                            {{ random_movie.overview|truncatewords:30 }}
+                        </div>
+                    </div>
+                    
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'add_viewing' %}" class="random-movie-actions">
+                            {% csrf_token %}
+                            <input type="hidden" name="movie_id" value="{{ random_movie.id }}">
+                            <button type="submit" class="btn btn-outline random-movie-button">
+                                <i class="fas fa-check-circle"></i>
+                                {% trans 'Already seen?' %}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
             {% else %}
-                <div class="auth-buttons">
-                    <a href="{% url 'login' %}" class="btn btn-primary">
-                        <i class="fas fa-sign-in-alt"></i>
-                        {% trans 'Sign In' %}
-                    </a>
-                    <a href="{% url 'signup' %}" class="btn btn-outline">
-                        <i class="fas fa-user-plus"></i>
-                        {% trans 'Sign Up' %}
-                    </a>
+                <div class="random-movie-loading">
+                    <i class="fas fa-spinner fa-spin popcorn-icon popcorn-icon-large"></i>
+                    <p>{% trans 'Loading random movie...' %}</p>
                 </div>
             {% endif %}
         </div>
@@ -233,11 +289,149 @@
         font-size: 0.9rem;
     }
 
+    /* Home page grid layout */
+    .home-content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .welcome-column,
+    .random-movie-column {
+        padding: 1.5rem;
+    }
+
+    /* Random movie styles */
+    .random-movie-title {
+        color: var(--popcorn-red);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.3rem;
+    }
+
+    .random-movie-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .random-movie-poster {
+        width: 180px;
+        height: 270px;
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        background: linear-gradient(135deg, var(--popcorn-red-light), var(--popcorn-gold-light));
+    }
+
+    .random-movie-poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .random-movie-poster:hover img {
+        transform: scale(1.05);
+    }
+
+    .movie-poster-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--popcorn-red-light), var(--popcorn-gold-light));
+        color: white;
+        font-size: 3rem;
+    }
+
+    .random-movie-info {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .random-movie-name {
+        color: var(--popcorn-red);
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+    }
+
+    .random-movie-year {
+        color: var(--popcorn-gold);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .random-movie-overview {
+        color: var(--text-color);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+    }
+
+    .random-movie-actions {
+        width: 100%;
+    }
+
+    .random-movie-button {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .random-movie-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: var(--popcorn-red);
+    }
+
+    .random-movie-loading i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
     /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        .home-content-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+    }
+
     @media (max-width: 768px) {
         .popular-movies-grid {
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 1rem;
+        }
+        
+        .random-movie-poster {
+            width: 160px;
+            height: 240px;
         }
     }
 
@@ -248,6 +442,11 @@
 
         .features-list ul {
             padding-left: 1rem;
+        }
+        
+        .random-movie-poster {
+            width: 140px;
+            height: 210px;
         }
     }
 </style>
