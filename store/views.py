@@ -5,9 +5,18 @@ from django.contrib.auth.models import User
 from django.utils import translation
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
+from django.conf import settings
 from .models import Movie, Viewing, UserProfile, MovieTranslation
 from .helpers import TMDBClient
+from pathlib import Path
+from dotenv import load_dotenv
 import requests
+import os
+
+# Load .env file for hCaptcha keys
+env_path = Path(__file__).resolve().parent.parent / 'popcorn_box' / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
 import json
 
 
@@ -41,6 +50,7 @@ def signup_view(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
+        hcaptcha_response = request.POST.get('h-captcha-response')
 
         # Validation
         if password != password_confirm:
@@ -52,26 +62,64 @@ def signup_view(request):
         elif len(password) < 6:
             messages.error(request, _('Password must be at least 6 characters.'))
         else:
-            # Créer l'utilisateur (actif immédiatement)
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                is_active=True  # Compte actif immédiatement
-            )
-            
-            # Créer le profil utilisateur
-            user_profile = UserProfile.objects.create(
-                user=user,
-                language='en'
-            )
+            # Validate hCaptcha manually
+            hcaptcha_response = request.POST.get('h-captcha-response')
+            if not hcaptcha_response:
+                messages.error(request, _('Please complete the CAPTCHA.'))
+            else:
+                # Use the same validation method as django-hcaptcha package
+                from urllib.error import HTTPError
+                from urllib.parse import urlencode
+                from urllib.request import build_opener, Request, ProxyHandler
+                import json
+                
+                VERIFY_URL = 'https://hcaptcha.com/siteverify'
+                TIMEOUT = 10  # seconds
+                HCAPTCHA_SECRET_KEY = os.getenv('HCAPTCHA_SECRET_KEY', '0x0000000000000000000000000000000000000000')
+                opener = build_opener(ProxyHandler({}))
+                post_data = urlencode({
+                    'secret': HCAPTCHA_SECRET_KEY,
+                    'response': hcaptcha_response,
+                }).encode()
+                request_captcha = Request(VERIFY_URL, post_data)
+                try:
+                    response = opener.open(request_captcha, timeout=TIMEOUT)
+                    response_data = json.loads(response.read().decode("utf-8"))
+                    
+                    if not response_data.get('success'):
+                        messages.error(request, _('Invalid CAPTCHA. Please try again.'))
+                        return render(request, 'signup.html', {
+        'title': _('Sign Up'),
+        'HCAPTCHA_SITE_KEY': os.getenv('HCAPTCHA_SITE_KEY', '10000000-ffff-ffff-ffff-000000000001')
+    })
+                except HTTPError:
+                    messages.error(request, _('CAPTCHA verification failed. Please try again.'))
+                    return render(request, 'signup.html', {'title': _('Sign Up')})
+                
+                # If we get here, CAPTCHA is valid
+                # Créer l'utilisateur (actif immédiatement)
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                    is_active=True  # Compte actif immédiatement
+                )
+                
+                # Créer le profil utilisateur
+                user_profile = UserProfile.objects.create(
+                    user=user,
+                    language='en'
+                )
 
-            # Connecter l'utilisateur automatiquement
-            login(request, user)
-            messages.success(request, _('Account created successfully! Welcome to Popcorn Box!'))
-            return redirect('home')
+                # Connecter l'utilisateur automatiquement
+                login(request, user)
+                messages.success(request, _('Account created successfully! Welcome to Popcorn Box!'))
+                return redirect('home')
 
-    return render(request, 'signup.html', {'title': _('Sign Up')})
+    return render(request, 'signup.html', {
+        'title': _('Sign Up'),
+        'HCAPTCHA_SITE_KEY': os.getenv('HCAPTCHA_SITE_KEY', '10000000-ffff-ffff-ffff-000000000001')
+    })
 
 
 def movie_list(request):

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
+    'hcaptcha',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,5 @@ STATIC_URL = 'static/'
 # Email settings (commented out since we don't use email activation)
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # DEFAULT_FROM_EMAIL = 'noreply@popcornbox.com'
+
+
