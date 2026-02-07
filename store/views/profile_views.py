@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import gettext as _
-from ..models import UserProfile
+from ..models import UserProfile, Movie
+from ..helpers import TMDBClient
 
 def home(request):
     if request.user.is_authenticated:
@@ -17,8 +18,7 @@ def home(request):
         # Récupérer un film aléatoire
         random_movie = None
         try:
-            from ..models import Movie, MovieTranslation
-            from ..helpers import TMDBClient
+            from ..models import MovieTranslation
             import random
             
             # Récupérer tous les films de la base de données
@@ -35,7 +35,7 @@ def home(request):
                     random_movie.overview = translation.summary  # Utiliser summary au lieu de overview
                 except MovieTranslation.DoesNotExist:
                     # Utiliser les valeurs originales si pas de traduction
-                    random_movie.translated_title = random_movie.title
+                    random_movie.translated_title = random_movie.original_title
                     # Si pas de poster, essayer de le récupérer depuis TMDB
                     poster_url = random_movie.get_poster_url()
                     if not poster_url and random_movie.tmdb_id:
