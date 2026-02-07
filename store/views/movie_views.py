@@ -21,7 +21,7 @@ def movie_list(request):
         pass
     
     # Récupérer les films avec traductions si disponibles
-    movies = Movie.objects.all().order_by('-release_date')
+    movies = Movie.objects.all().order_by('-year')
     
     # Pour chaque film, essayer de récupérer la traduction
     translated_movies = []

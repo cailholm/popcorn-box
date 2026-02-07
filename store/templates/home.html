@@ -68,10 +68,10 @@
                     <div class="random-movie-info">
                         <h3 class="random-movie-name">{{ random_movie.translated_title }}</h3>
                         
-                        {% if random_movie.release_date %}
+                        {% if random_movie.year %}
                             <div class="random-movie-year">
                                 <i class="fas fa-calendar-alt"></i>
-                                {{ random_movie.release_date|date:"Y" }}
+                                {{ random_movie.year }}
                             </div>
                         {% endif %}
                         
