@@ -30,14 +30,24 @@
                     <i class="fas fa-eye popcorn-icon"></i>
                     <span>{% trans 'My Viewings' %}</span>
                 </a>
-                <a href="{% url 'profile' %}" {% if request.resolver_match.url_name == 'profile' %}class="active"{% endif %}>
-                    <i class="fas fa-user popcorn-icon"></i>
-                    <span>{% trans 'Profile' %}</span>
-                </a>
-                <a href="{% url 'logout' %}">
-                    <i class="fas fa-sign-out-alt popcorn-icon"></i>
-                    <span>{% trans 'Logout' %}</span>
-                </a>
+                <!-- Sous-menu pour l'utilisateur -->
+                <div class="user-submenu">
+                    <button class="user-button">
+                        <i class="fas fa-user popcorn-icon"></i>
+                        <span>{{ user.username }}</span>
+                        <i class="fas fa-chevron-down popcorn-icon"></i>
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="{% url 'profile' %}" {% if request.resolver_match.url_name == 'profile' %}class="active"{% endif %}>
+                            <i class="fas fa-user popcorn-icon"></i>
+                            <span>{% trans 'Profile' %}</span>
+                        </a>
+                        <a href="{% url 'logout' %}">
+                            <i class="fas fa-sign-out-alt popcorn-icon"></i>
+                            <span>{% trans 'Logout' %}</span>
+                        </a>
+                    </div>
+                </div>
             {% else %}
                 <!-- Boutons pour utilisateurs non connectés -->
                 <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>
@@ -69,5 +79,27 @@
     
     <!-- Blocs pour JavaScript supplémentaire -->
     {% block extra_js %}{% endblock %}
+    
+    <!-- JavaScript pour le sous-menu utilisateur -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userButtons = document.querySelectorAll('.user-button');
+            userButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const dropdown = this.nextElementSibling;
+                    dropdown.classList.toggle('show');
+                });
+            });
+            
+            // Fermer le dropdown si on clique ailleurs
+            document.addEventListener('click', function() {
+                const dropdowns = document.querySelectorAll('.user-dropdown');
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

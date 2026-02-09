@@ -91,3 +91,37 @@ def search_movies_api(request):
     results = tmdb_client.search_movies(query, language=language)
     
     return JsonResponse({'results': results})
+
+@login_required
+def refresh_movie_from_tmdb(request, movie_id):
+    """Rafraîchit les informations d'un film depuis TMDB."""
+    if request.method == 'POST':
+        try:
+            # Récupérer le film
+            movie = Movie.objects.get(id=movie_id)
+            
+            # Récupérer la langue de l'utilisateur
+            language = 'en'  # Langue par défaut
+            try:
+                user_profile = request.user.userprofile
+                language = user_profile.language if user_profile.language else 'en'
+            except:
+                pass
+
+            # Créer un client TMDB et rafraîchir avec la langue de l'utilisateur
+            tmdb_client = TMDBClient()
+            updated = tmdb_client.refresh_movie_from_tmdb(movie, language)
+            
+            if updated:
+                messages.success(request, _('Les informations du film ont été mises à jour depuis TMDB.'))
+            else:
+                messages.info(request, _('Aucune mise à jour nécessaire.'))
+                
+        except Movie.DoesNotExist:
+            messages.error(request, _('Film non trouvé.'))
+        except Exception as e:
+            messages.error(request, _(f'Erreur lors de la mise à jour: {str(e)}'))
+            
+        # Rediriger vers la page détail
+        return redirect('movie_detail', movie_id=movie_id)
+    return redirect('movie_detail', movie_id=movie_id)

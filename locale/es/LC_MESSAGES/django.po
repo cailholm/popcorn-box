@@ -186,7 +186,31 @@ msgstr ""
 
 #: store/templates/home.html:109
 msgid "Popular Movies"
-msgstr ""
+msgstr "Películas populares"
+
+#: store/templates/movie_detail.html:25
+msgid "Refresh from TMDB"
+msgstr "Actualizar desde TMDB"
+
+#: store/templates/movie_detail.html:26
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: store/views/movie_views.py:85
+msgid "Les informations du film ont été mises à jour depuis TMDB."
+msgstr "La información de la película ha sido actualizada desde TMDB."
+
+#: store/views/movie_views.py:87
+msgid "Aucune mise à jour nécessaire."
+msgstr "No es necesaria ninguna actualización."
+
+#: store/views/movie_views.py:90
+msgid "Film non trouvé."
+msgstr "Película no encontrada."
+
+#: store/views/movie_views.py:92
+msgid "Erreur lors de la mise à jour: {error}"
+msgstr "Error al actualizar: {error}"
 
 #: store/templates/home.html:130
 msgid "view"

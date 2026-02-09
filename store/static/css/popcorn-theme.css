@@ -1346,3 +1346,93 @@ button i, .btn i {
     );
     margin: 2rem 0;
 }
+
+/* User Submenu Styles */
+.user-submenu {
+    position: relative;
+    display: inline-block;
+}
+
+.user-button {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--popcorn-red) 0px,
+        var(--popcorn-red) 20px,
+        var(--popcorn-red-dark) 20px,
+        var(--popcorn-red-dark) 40px
+    );
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 8px rgba(214, 40, 40, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.user-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(214, 40, 40, 0.4);
+}
+
+.user-button i {
+    animation: pop 1s infinite alternate;
+}
+
+.user-dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    min-width: 200px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 1001;
+    transform: translateY(-10px);
+}
+
+.user-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown a {
+    color: var(--popcorn-red);
+    padding: 0.8rem 1.2rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition);
+    border-bottom: 1px solid var(--popcorn-red-light);
+}
+
+.user-dropdown a:hover {
+    background-color: rgba(214, 40, 40, 0.1);
+    color: var(--popcorn-red-dark);
+}
+
+.user-dropdown a:last-child {
+    border-bottom: none;
+}
+
+.user-dropdown a i {
+    color: var(--popcorn-gold);
+}
+
+.user-dropdown a:hover i {
+    color: var(--popcorn-red-dark);
+}

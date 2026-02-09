@@ -19,7 +19,15 @@
                 {% endif %}
             </div>
             <div style="flex: 2; min-width: 300px;">
-                <h1 style="margin-bottom: 1.5rem;">{{ movie.original_title }}</h1>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h1 style="margin: 0;">{{ movie.original_title }}</h1>
+                    <form method="post" action="{% url 'refresh_movie' movie.id %}" style="margin-left: 1rem; border: none; background: none; padding: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline" title="{% trans 'Refresh from TMDB' %}">
+                            <i class="fas fa-sync-alt"></i> {% trans 'Refresh' %}
+                        </button>
+                    </form>
+                </div>
                 
                 <div class="popcorn-card" style="background-color: var(--popcorn-cream); border-left: 4px solid var(--popcorn-gold);">
                     <p style="margin-bottom: 0.5rem;"><strong>{% trans 'Original Title' %}:</strong> {{ movie.original_title }}</p>

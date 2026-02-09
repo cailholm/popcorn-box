@@ -155,7 +155,7 @@ class TMDBClient:
 
     def get_random_popular_movie(self, language=None):
         """
-        Récupère un film populaire aléatoire depuis TMDB.
+        Récupère un film populaire aléatoire depuis TMDB en utilisant /discover/movie.
 
         Args:
             language: Code de langue optionnel (ex: 'fr-FR')
@@ -163,14 +163,39 @@ class TMDBClient:
         Returns:
             dict: Un film populaire aléatoire
         """
-        # Récupérer la première page de films populaires
-        popular_movies = self.get_popular_movies(language, page=1)
-        
+        import random
+
+        # Utiliser une page aléatoire pour plus de variété (pages 1 à 10)
+        random_page = random.randint(1, 10)
+
+        # Appel direct à /discover/movie avec une page aléatoire
+        url = f'{self.base_url}/discover/movie?api_key={self.api_key}&sort_by=popularity.desc&page={random_page}'
+        if language:
+            url += f'&language={language}'
+
+        popular_movies = self._make_request(url)
+
         if popular_movies and popular_movies.get('results'):
-            import random
             return random.choice(popular_movies['results'])
         
         return None
+
+    def get_movie_credits(self, movie_id):
+        """
+        Récupère les crédits d'un film depuis TMDB.
+
+        Args:
+            movie_id: ID du film TMDB
+
+        Returns:
+            dict: Données des crédits ou None en cas d'erreur
+        """
+        try:
+            url = f'{self.base_url}/movie/{movie_id}/credits?api_key={self.api_key}'
+            return self._make_request(url)
+        except Exception as e:
+            print(f"Error getting credits for movie {movie_id}: {e}")
+            return None
 
     def save_tmdb_movie_to_database(self, tmdb_movie_data, language='en'):
         """
@@ -202,8 +227,20 @@ class TMDBClient:
             # Extraire le résumé
             summary = tmdb_movie_data.get('overview', '')
             
-            # Extraire le réalisateur (si disponible dans les crédits)
+            # Extraire le réalisateur depuis les crédits
             director = 'Unknown'
+            tmdb_id = tmdb_movie_data.get('id')
+            if tmdb_id:
+                try:
+                    credits = self.get_movie_credits(tmdb_id)
+                    if credits and credits.get('crew'):
+                        # Trouver le réalisateur dans l'équipe
+                        for crew_member in credits['crew']:
+                            if crew_member.get('job') == 'Director':
+                                director = crew_member.get('name', 'Unknown')
+                                break
+                except Exception as e:
+                    print(f"Could not retrieve director for movie {tmdb_id}: {e}")
             
             # Récupérer l'affiche en base64
             poster_path = tmdb_movie_data.get('poster_path')
@@ -263,6 +300,98 @@ class TMDBClient:
             import traceback
             traceback.print_exc()
             return None, None
+
+    def refresh_movie_from_tmdb(self, movie, language='en'):
+        """
+        Met à jour les informations d'un film depuis TMDB.
+
+        Args:
+            movie: Instance du modèle Movie à mettre à jour
+            language: Code de langue pour les traductions (ex: 'fr', 'de', 'es')
+
+        Returns:
+            bool: True si des mises à jour ont été effectuées, False sinon
+        """
+        try:
+            # Récupérer les données actuelles depuis TMDB dans la langue spécifiée
+            tmdb_movie_data = self.get_movie_details(movie.tmdb_id, language=language)
+            if not tmdb_movie_data:
+                return False
+
+            updated = False
+
+            # Mettre à jour l'année si différente
+            release_date = tmdb_movie_data.get('release_date')
+            new_year = int(release_date[:4]) if release_date and len(release_date) >= 4 else None
+            if new_year and new_year != movie.year:
+                movie.year = new_year
+                updated = True
+
+            # Mettre à jour le réalisateur
+            credits = self.get_movie_credits(movie.tmdb_id)
+            if credits and credits.get('crew'):
+                new_director = 'Unknown'
+                for crew_member in credits['crew']:
+                    if crew_member.get('job') == 'Director':
+                        new_director = crew_member.get('name', 'Unknown')
+                        break
+                if new_director != movie.director:
+                    movie.director = new_director
+                    updated = True
+
+            # Mettre à jour le résumé si différent
+            new_summary = tmdb_movie_data.get('overview', '')
+            if new_summary != movie.summary:
+                movie.summary = new_summary
+                updated = True
+
+            if updated:
+                movie.save()
+
+            # Mettre à jour les traductions existantes pour la langue spécifiée
+            self.refresh_movie_translations(movie, tmdb_movie_data, language)
+
+            return updated
+
+        except Exception as e:
+            print(f"Error refreshing movie {movie.id} from TMDB: {e}")
+            return False
+
+    def refresh_movie_translations(self, movie, tmdb_movie_data, language='en'):
+        """Met à jour les traductions existantes d'un film pour une langue spécifique."""
+        try:
+            from .models import MovieTranslation
+
+            # Mettre à jour uniquement la traduction pour la langue spécifiée
+            try:
+                translation = MovieTranslation.objects.get(movie=movie, language=language)
+
+                # Mettre à jour le titre traduit
+                new_title = tmdb_movie_data.get('title', movie.original_title)
+                if new_title != translation.title:
+                    translation.title = new_title
+
+                # Mettre à jour le résumé traduit
+                new_summary = tmdb_movie_data.get('overview', movie.summary)
+                if new_summary != translation.summary:
+                    translation.summary = new_summary
+
+                translation.save()
+                print(f"Translation updated for {language}: {movie.original_title}")
+
+            except MovieTranslation.DoesNotExist:
+                # Si la traduction n'existe pas, la créer
+                translation = MovieTranslation.objects.create(
+                    movie=movie,
+                    language=language,
+                    title=tmdb_movie_data.get('title', movie.original_title),
+                    summary=tmdb_movie_data.get('overview', movie.summary),
+                    is_fallback=False
+                )
+                print(f"New translation created for {language}: {movie.original_title}")
+
+        except Exception as e:
+            print(f"Error refreshing translations for movie {movie.id}: {e}")
 
 
 class TMDBMovie:

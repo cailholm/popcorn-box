@@ -123,7 +123,12 @@
                         {% endif %}
                     </div>
                     <div class="popular-movie-info">
-                        <h4 class="popular-movie-title">{{ movie.translated_title }}</h4>
+                        <h4 class="popular-movie-title">
+                            {{ movie.translated_title|default:movie.original_title }}
+                            {% if movie.year %}
+                                <span class="popular-movie-year-in-title">({{ movie.year }})</span>
+                            {% endif %}
+                        </h4>
                         <div class="popular-movie-meta">
                             <span class="view-count">
                                 <i class="fas fa-eye"></i>
@@ -271,6 +276,13 @@
         line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+
+    .popular-movie-year-in-title {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        font-weight: 400;
+        margin-left: 0.5rem;
     }
 
     .popular-movie-meta {
