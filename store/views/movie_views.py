@@ -31,7 +31,9 @@ def movie_list(request):
             movie.title = translation.title
             movie.overview = translation.summary  # Utiliser summary au lieu de overview
         except MovieTranslation.DoesNotExist:
-            pass  # Garder les valeurs originales
+            # Toujours définir les attributs même sans traduction pour la cohérence
+            movie.title = movie.original_title
+            movie.overview = movie.summary
         translated_movies.append(movie)
     
     return render(request, 'movie_list.html', {
@@ -57,7 +59,9 @@ def movie_detail(request, movie_id):
         movie.title = translation.title
         movie.overview = translation.summary  # Utiliser summary au lieu de overview
     except MovieTranslation.DoesNotExist:
-        pass  # Garder les valeurs originales
+        # Toujours définir les attributs même sans traduction pour éviter les erreurs
+        movie.title = movie.original_title
+        movie.overview = movie.summary
     
     # Récupérer les visionnages de l'utilisateur pour ce film
     viewings = Viewing.objects.filter(user=request.user, movie=movie).order_by('-date')

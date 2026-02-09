@@ -9,19 +9,21 @@
         <div class="welcome-column popcorn-card fade-in">
             <h1 style="text-align: center;">
                 <i class="fas fa-home"></i>
-                {{ welcome_message }}
+                {% trans 'Welcome to Popcorn Box' %}
             </h1>
 
             <div class="welcome-description">
-                <p>{{ description }}</p>
+                <p>{% trans 'Track your movie viewings, discover new films, and share your favorites with friends!' %}</p>
             </div>
 
             <div class="features-list">
                 <h3><i class="fas fa-star"></i> {% trans 'Features' %}:</h3>
                 <ul>
-                    {% for feature in features %}
-                    <li><i class="fas fa-check-circle"></i> {{ feature }}</li>
-                    {% endfor %}
+                    <li><i class="fas fa-check-circle"></i> {% trans 'Track all your movie viewings in one place' %}</li>
+                    <li><i class="fas fa-check-circle"></i> {% trans 'Discover popular movies among users' %}</li>
+                    <li><i class="fas fa-check-circle"></i> {% trans 'Multilingual support for international films' %}</li>
+                    <li><i class="fas fa-check-circle"></i> {% trans 'Beautiful and intuitive interface' %}</li>
+                    <li><i class="fas fa-check-circle"></i> {% trans 'Share your movie preferences with friends' %}</li>
                 </ul>
             </div>
 
@@ -29,7 +31,7 @@
                 {% if user.is_authenticated %}
                     <a href="{% url 'add_viewing' %}" class="btn btn-primary">
                         <i class="fas fa-plus-circle"></i>
-                        {{ start_tracking_message }}
+                        {% trans 'Start Tracking Viewings' %}
                     </a>
                 {% else %}
                     <div class="auth-buttons">
@@ -104,7 +106,7 @@
     <div class="popcorn-card fade-in">
         <h2 class="popular-movies-title">
             <i class="fas fa-fire"></i>
-            {{ popular_title }}
+            {% trans 'Popular Movies' %}
         </h2>
 
         {% if popular_movies %}
@@ -135,10 +137,10 @@
         {% else %}
             <div class="empty-state">
                 <i class="fas fa-film popcorn-icon popcorn-icon-large"></i>
-                <p>{{ no_viewings_message }}</p>
+                <p>{% trans 'No viewings yet. Start tracking your movies!' %}</p>
                 <a href="{% url 'add_viewing' %}" class="btn btn-outline">
                     <i class="fas fa-plus"></i>
-                    {{ start_tracking_message }}
+                    {% trans 'Start Tracking Viewings' %}
                 </a>
             </div>
         {% endif %}
@@ -266,6 +268,7 @@
         font-weight: 600;
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }

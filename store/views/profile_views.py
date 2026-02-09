@@ -23,31 +23,27 @@ def home(request):
             translation_utils.activate(language)
             request.LANGUAGE_CODE = language
         
-        # Récupérer un film aléatoire
+        # Récupérer un film aléatoire depuis TMDB
         random_movie = None
         try:
-            from ..models import MovieTranslation
-            import random
+            from ..helpers import TMDBClient, TMDBMovie
             
-            # Récupérer tous les films de la base de données
-            all_movies = list(Movie.objects.all())
+            # Créer un client TMDB
+            tmdb_client = TMDBClient()
             
-            if all_movies:
-                # Sélectionner un film aléatoire
-                random_movie = random.choice(all_movies)
+            # Récupérer un film populaire aléatoire depuis TMDB
+            tmdb_movie_data = tmdb_client.get_random_popular_movie(language)
+            
+            if tmdb_movie_data:
+                # Sauvegarder le film dans la base de données pour enrichir notre collection
+                movie_db, translation_db = tmdb_client.save_tmdb_movie_to_database(tmdb_movie_data, language)
                 
-                # Essayer de récupérer la traduction
-                try:
-                    translation = MovieTranslation.objects.get(movie=random_movie, language=language)
-                    random_movie.translated_title = translation.title
-                    random_movie.overview = translation.summary  # Utiliser summary au lieu de overview
-                except MovieTranslation.DoesNotExist:
-                    # Utiliser les valeurs originales si pas de traduction
-                    random_movie.translated_title = random_movie.original_title
-                    # La méthode get_poster_url() est utilisée directement dans le template
+                # Créer un wrapper TMDBMovie pour être compatible avec le template
+                random_movie = TMDBMovie(tmdb_movie_data, language)
+                
         except Exception as e:
             # En cas d'erreur, nous aurons random_movie = None
-            print(f"Error getting random movie: {e}")
+            print(f"Error getting random movie from TMDB: {e}")
         
         # Récupérer les films populaires (visionnages les plus fréquents)
         popular_movies = []
@@ -72,18 +68,6 @@ def home(request):
         context = {
             'title': 'Home',
             'user_language': language,
-            'welcome_message': 'Welcome to Popcorn Box',
-            'description': 'Track your movie viewings, discover new films, and share your favorites with friends!',
-            'features': [
-                'Track all your movie viewings in one place',
-                'Discover popular movies among users',
-                'Multilingual support for international films',
-                'Beautiful and intuitive interface',
-                'Share your movie preferences with friends'
-            ],
-            'start_tracking_message': 'Start Tracking Viewings',
-            'popular_title': 'Popular Movies',
-            'no_viewings_message': 'No viewings yet. Start tracking your movies!',
             'random_movie': random_movie,
             'popular_movies': popular_movies
         }
